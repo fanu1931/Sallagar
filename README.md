@@ -42,12 +42,33 @@ A modern affiliate blog built with React, Vite, and TailwindCSS. Sallagar provid
 npm install
 ```
 
-2. Start the development server:
+2. Set up Supabase:
+   - Create a Supabase project at https://supabase.com
+   - Create a table named `blogs` with the following columns:
+     - `id` (bigint, primary key)
+     - `title` (jsonb) - stores {en, mr, hi} language variants
+     - `excerpt` (jsonb) - stores {en, mr, hi} language variants
+     - `content` (jsonb) - stores {en, mr, hi} language variants
+     - `image` (text)
+     - `category` (text)
+     - `read_time` (text)
+     - `date` (text)
+     - `created_at` (timestamptz, default now())
+   - Get your Supabase URL and Anon Key from project settings
+   - Copy `.env.example` to `.env` and fill in your credentials:
+     ```bash
+     cp .env.example .env
+     ```
+   - Edit `.env` and replace:
+     - `your_supabase_project_url_here` with your actual Supabase URL
+     - `your_supabase_anon_key_here` with your actual Supabase Anon Key
+
+3. Start the development server:
 ```bash
 npm run dev
 ```
 
-3. Open your browser and navigate to the URL shown in the terminal (usually `http://localhost:5173`)
+4. Open your browser and navigate to the URL shown in the terminal (usually `http://localhost:5173`)
 
 ### Build for Production
 

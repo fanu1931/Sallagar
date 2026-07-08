@@ -1,99 +1,38 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Calendar, Clock, ArrowRight, Plus, Trash2, X } from 'lucide-react'
+import { supabase } from '../supabaseClient'
 
 const Blog = () => {
   const [showAdminForm, setShowAdminForm] = useState(false)
   const [posts, setPosts] = useState([])
+  const [currentLang, setCurrentLang] = useState('mr')
 
   const categoryOptions = ['Good Thoughts', 'Health & Ayurveda', 'Motivation']
 
-  // Initial blog posts data (fallback if localStorage is empty)
-  const initialPosts = [
-    {
-      id: 1,
-      title: "५ विचार जे तुमचे आयुष्य बदलू शकतात",
-      excerpt: "जीवनात यश मिळवण्यासाठी आणि सुखी राहण्यासाठी हे ५ सोपे विचार तुमच्या मनाला नवीन दिशा देऊ शकतात. या विचारांचा अभ्यास करा आणि बदल पहा.",
-      content: "जीवनात यश मिळवण्यासाठी आणि सुखी राहण्यासाठी हे ५ सोपे विचार तुमच्या मनाला नवीन दिशा देऊ शकतात. या विचारांचा अभ्यास करा आणि बदल पहा.",
-      category: "Good Thoughts",
-      date: "June 15, 2024",
-      readTime: "5 min read",
-      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=400&fit=crop"
-    },
-    {
-      id: 2,
-      title: "दैनिक जीवनात आयुर्वेदाचे महत्त्व आणि सोपे नियम",
-      excerpt: "आयुर्वेद हा आपल्या आरोग्यासाठी एक अमूल्य वरदान आहे. दैनंदिन जीवनात आयुर्वेदाचे काही सोपे नियम पाळून आपण आरोग्य आणि आनंदी जीवन जगू शकतो.",
-      content: "आयुर्वेद हा आपल्या आरोग्यासाठी एक अमूल्य वरदान आहे. दैनंदिन जीवनात आयुर्वेदाचे काही सोपे नियम पाळून आपण आरोग्य आणि आनंदी जीवन जगू शकतो.",
-      category: "Health & Ayurveda",
-      date: "June 12, 2024",
-      readTime: "7 min read",
-      image: "https://images.unsplash.com/photo-1600618528240-fb9fc964b853?w=800&h=400&fit=crop"
-    },
-    {
-      id: 3,
-      title: "अपयशातून यश कसं मिळवायचं? Speak Motivation",
-      excerpt: "अपयश हा यशाचा पहिला पायरी आहे. अपयशातून कसे शिकायचे आणि त्यातून कसे बलवान बनून यश मिळवायचे, हे जाणून घ्या आमच्या या प्रेरणादायक लेखातून.",
-      content: "अपयश हा यशाचा पहिला पायरी आहे. अपयशातून कसे शिकायचे आणि त्यातून कसे बलवान बनून यश मिळवायचे, हे जाणून घ्या आमच्या या प्रेरणादायक लेखातून.",
-      category: "Motivation",
-      date: "June 10, 2024",
-      readTime: "6 min read",
-      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&h=400&fit=crop"
-    },
-    {
-      id: 4,
-      title: "सकारात्मक विचारांचे जीवनावरील प्रभाव",
-      excerpt: "सकारात्मक विचार केवळ आनंद देत नाहीत, तर ते आपल्या आरोग्य, नाती आणि कामगिरीवरही सकारात्मक परिणाम करतात. सकारात्मकता कशी विकसित करावी?",
-      content: "सकारात्मक विचार केवळ आनंद देत नाहीत, तर ते आपल्या आरोग्य, नाती आणि कामगिरीवरही सकारात्मक परिणाम करतात. सकारात्मकता कशी विकसित करावी?",
-      category: "Good Thoughts",
-      date: "June 8, 2024",
-      readTime: "4 min read",
-      image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800&h=400&fit=crop"
-    },
-    {
-      id: 5,
-      title: "सकाळच्या दिनचर्येतील आयुर्वेदिक संकल्पना",
-      excerpt: "उठण्यापासून झोपण्यापर्यंत आयुर्वेदानुसार कशी दिनचर्या पाळावी? सकाळचे उठणे, व्यायाम, आहार आणि इतर महत्त्वाच्या गोष्टी जाणून घ्या.",
-      content: "उठण्यापासून झोपण्यापर्यंत आयुर्वेदानुसार कशी दिनचर्या पाळावी? सकाळचे उठणे, व्यायाम, आहार आणि इतर महत्त्वाच्या गोष्टी जाणून घ्या.",
-      category: "Health & Ayurveda",
-      date: "June 5, 2024",
-      readTime: "8 min read",
-      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=400&fit=crop"
-    },
-    {
-      id: 6,
-      title: "ध्येय निश्चित करण्याची महत्त्वाची टप्पी",
-      excerpt: "आयुष्यात यश मिळवण्यासाठी ध्येय निश्चित करणे अत्यंत महत्त्वाचे आहे. कसे योग्य ध्येय निश्चित करावे आणि त्याकडे कसे पोहोचावे, हे शिकून घ्या.",
-      content: "आयुष्यात यश मिळवण्यासाठी ध्येय निश्चित करणे अत्यंत महत्त्वाचे आहे. कसे योग्य ध्येय निश्चित करावे आणि त्याकडे कसे पोहोचावे, हे शिकून घ्या.",
-      category: "Motivation",
-      date: "June 2, 2024",
-      readTime: "6 min read",
-      image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&h=400&fit=crop"
-    }
-  ]
-
-  // Load posts from localStorage on mount
+  // Fetch posts from Supabase on mount
   useEffect(() => {
-    const savedPosts = localStorage.getItem('sallagar_blogs')
-    if (savedPosts) {
-      setPosts(JSON.parse(savedPosts))
-    } else {
-      setPosts(initialPosts)
+    const fetchPosts = async () => {
+      const { data, error } = await supabase
+        .from('blogs')
+        .select('*')
+        .order('created_at', { ascending: false })
+      
+      if (error) {
+        console.error('Error fetching posts:', error)
+      } else {
+        setPosts(data || [])
+      }
     }
+
+    fetchPosts()
   }, [])
 
-  // Save posts to localStorage whenever they change
-  useEffect(() => {
-    if (posts.length > 0) {
-      localStorage.setItem('sallagar_blogs', JSON.stringify(posts))
-    }
-  }, [posts])
-
-  // Form state for new blog post
+  // Form state for new blog post with multi-language support
   const [newPost, setNewPost] = useState({
-    title: '',
-    excerpt: '',
-    content: '',
+    title: { en: '', mr: '', hi: '' },
+    excerpt: { en: '', mr: '', hi: '' },
+    content: { en: '', mr: '', hi: '' },
     image: '',
     category: 'Good Thoughts',
     readTime: ''
@@ -105,20 +44,45 @@ const Blog = () => {
     return new Date().toLocaleDateString('en-US', options)
   }
 
-  // Handle adding a new blog post
-  const handleAddPost = (e) => {
+  // Handle adding a new blog post to Supabase
+  const handleAddPost = async (e) => {
     e.preventDefault()
+    
     const postToAdd = {
-      ...newPost,
-      id: Date.now(), // Generate unique ID based on timestamp
-      date: getCurrentDate() // Auto-generate current date
+      title: newPost.title,
+      excerpt: newPost.excerpt,
+      content: newPost.content,
+      image: newPost.image,
+      category: newPost.category,
+      read_time: newPost.readTime,
+      date: getCurrentDate()
     }
-    setPosts([postToAdd, ...posts]) // Add to top of list
+
+    const { data, error } = await supabase
+      .from('blogs')
+      .insert([postToAdd])
+      .select()
+
+    if (error) {
+      console.error('Error adding post:', error)
+      alert('Failed to add blog post. Please try again.')
+    } else {
+      // Refresh posts from Supabase
+      const { data: refreshedData } = await supabase
+        .from('blogs')
+        .select('*')
+        .order('created_at', { ascending: false })
+      
+      if (refreshedData) {
+        setPosts(refreshedData)
+      }
+    }
+
     // Reset form
     setNewPost({
-      title: '',
-      excerpt: '',
-      content: '',
+      title: { en: '', mr: '', hi: '' },
+      excerpt: { en: '', mr: '', hi: '' },
+      content: { en: '', mr: '', hi: '' },
       image: '',
       category: 'Good Thoughts',
       readTime: ''
@@ -126,10 +90,28 @@ const Blog = () => {
     setShowAdminForm(false)
   }
 
-  // Handle deleting a blog post
-  const handleDeletePost = (id) => {
+  // Handle deleting a blog post from Supabase
+  const handleDeletePost = async (id) => {
     if (window.confirm('Are you sure you want to delete this blog post?')) {
-      setPosts(posts.filter(post => post.id !== id))
+      const { error } = await supabase
+        .from('blogs')
+        .delete()
+        .eq('id', id)
+
+      if (error) {
+        console.error('Error deleting post:', error)
+        alert('Failed to delete blog post. Please try again.')
+      } else {
+        // Refresh posts from Supabase
+        const { data: refreshedData } = await supabase
+          .from('blogs')
+          .select('*')
+          .order('created_at', { ascending: false })
+        
+        if (refreshedData) {
+          setPosts(refreshedData)
+        }
+      }
     }
   }
 
@@ -150,6 +132,42 @@ const Blog = () => {
 
       {/* Blog Posts Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        {/* Language Switcher */}
+        <div className="mb-8 flex justify-center">
+          <div className="bg-slate-900/10 backdrop-blur-sm border border-slate-300 rounded-full p-1 flex gap-2 inline-flex mx-auto">
+            <button
+              onClick={() => setCurrentLang('en')}
+              className={`px-4 py-1.5 rounded-full transition-all duration-200 ${
+                currentLang === 'en' 
+                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold shadow-md' 
+                  : 'text-slate-700 hover:text-emerald-700 font-semibold transition-colors duration-200'
+              }`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setCurrentLang('mr')}
+              className={`px-4 py-1.5 rounded-full transition-all duration-200 ${
+                currentLang === 'mr' 
+                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold shadow-md' 
+                  : 'text-slate-700 hover:text-emerald-700 font-semibold transition-colors duration-200'
+              }`}
+            >
+              मराठी
+            </button>
+            <button
+              onClick={() => setCurrentLang('hi')}
+              className={`px-4 py-1.5 rounded-full transition-all duration-200 ${
+                currentLang === 'hi' 
+                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold shadow-md' 
+                  : 'text-slate-700 hover:text-emerald-700 font-semibold transition-colors duration-200'
+              }`}
+            >
+              हिंदी
+            </button>
+          </div>
+        </div>
+
         {/* Admin Toggle Button */}
         <div className="mb-8 flex gap-3">
           <button
@@ -168,17 +186,6 @@ const Blog = () => {
               </>
             )}
           </button>
-          <button
-            onClick={() => {
-              if (window.confirm('This will reset all blogs to the default list. Any custom blogs you added will be lost. Continue?')) {
-                localStorage.removeItem('sallagar_blogs')
-                setPosts(initialPosts)
-              }
-            }}
-            className="flex items-center gap-2 glassmorphism text-slate-700 px-5 py-3 rounded-2xl font-semibold transition-all duration-500 ease-out hover:-translate-y-1 hover:scale-105 shadow-md hover:shadow-xl hover:shadow-emerald-200/50"
-          >
-            Reset to Default Blogs
-          </button>
         </div>
 
         {/* Admin Form */}
@@ -191,36 +198,102 @@ const Blog = () => {
             <form onSubmit={handleAddPost} className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">Title (नाव)</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Title - English</label>
                   <input
                     type="text"
                     required
-                    value={newPost.title}
-                    onChange={(e) => setNewPost({...newPost, title: e.target.value})}
+                    value={newPost.title.en}
+                    onChange={(e) => setNewPost({...newPost, title: { ...newPost.title, en: e.target.value }})}
                     className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
-                    placeholder="Blog title"
+                    placeholder="Blog title in English"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">Description/Excerpt (थोडक्यात माहिती)</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Title - मराठी</label>
+                  <input
+                    type="text"
+                    required
+                    value={newPost.title.mr}
+                    onChange={(e) => setNewPost({...newPost, title: { ...newPost.title, mr: e.target.value }})}
+                    className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
+                    placeholder="ब्लॉगचे नाव मराठीत"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Title - हिंदी</label>
+                  <input
+                    type="text"
+                    required
+                    value={newPost.title.hi}
+                    onChange={(e) => setNewPost({...newPost, title: { ...newPost.title, hi: e.target.value }})}
+                    className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
+                    placeholder="ब्लॉग का शीर्षक हिंदी में"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Description/Excerpt - English</label>
                   <textarea
                     required
-                    value={newPost.excerpt}
-                    onChange={(e) => setNewPost({...newPost, excerpt: e.target.value})}
+                    value={newPost.excerpt.en}
+                    onChange={(e) => setNewPost({...newPost, excerpt: { ...newPost.excerpt, en: e.target.value }})}
                     rows="2"
                     className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
-                    placeholder="Short description"
+                    placeholder="Short description in English"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">Content (पूर्ण लेख)</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Description/Excerpt - मराठी</label>
                   <textarea
                     required
-                    value={newPost.content}
-                    onChange={(e) => setNewPost({...newPost, content: e.target.value})}
-                    rows="6"
+                    value={newPost.excerpt.mr}
+                    onChange={(e) => setNewPost({...newPost, excerpt: { ...newPost.excerpt, mr: e.target.value }})}
+                    rows="2"
                     className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
-                    placeholder="Full blog content"
+                    placeholder="थोडक्यात माहिती मराठीत"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Description/Excerpt - हिंदी</label>
+                  <textarea
+                    required
+                    value={newPost.excerpt.hi}
+                    onChange={(e) => setNewPost({...newPost, excerpt: { ...newPost.excerpt, hi: e.target.value }})}
+                    rows="2"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
+                    placeholder="हिंदी में थोड़ी जानकारी"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Content - English</label>
+                  <textarea
+                    required
+                    value={newPost.content.en}
+                    onChange={(e) => setNewPost({...newPost, content: { ...newPost.content, en: e.target.value }})}
+                    rows="4"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
+                    placeholder="Full blog content in English"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Content - मराठी</label>
+                  <textarea
+                    required
+                    value={newPost.content.mr}
+                    onChange={(e) => setNewPost({...newPost, content: { ...newPost.content, mr: e.target.value }})}
+                    rows="4"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
+                    placeholder="पूर्ण लेख मराठीत"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Content - हिंदी</label>
+                  <textarea
+                    required
+                    value={newPost.content.hi}
+                    onChange={(e) => setNewPost({...newPost, content: { ...newPost.content, hi: e.target.value }})}
+                    rows="4"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
+                    placeholder="हिंदी में पूर्ण लेख"
                   />
                 </div>
                 <div>
@@ -291,11 +364,11 @@ const Blog = () => {
                 />
                 <div className="absolute top-4 left-4 flex gap-2 z-20">
                   <span className={`px-4 py-2 rounded-full text-xs font-semibold backdrop-blur-sm ${
-                    post.category === 'Good Thoughts' ? 'bg-purple-100/80 text-purple-700' :
-                    post.category === 'Health & Ayurveda' ? 'bg-emerald-100/80 text-emerald-700' :
+                    (typeof post.category === 'object' ? (post.category[currentLang] || post.category['mr'] || post.category['en']) : post.category) === 'Good Thoughts' || (typeof post.category === 'object' ? (post.category[currentLang] || post.category['mr'] || post.category['en']) : post.category) === 'चांगले विचार' || (typeof post.category === 'object' ? (post.category[currentLang] || post.category['mr'] || post.category['en']) : post.category) === 'अच्छे विचार' ? 'bg-purple-100/80 text-purple-700' :
+                    (typeof post.category === 'object' ? (post.category[currentLang] || post.category['mr'] || post.category['en']) : post.category) === 'Health & Ayurveda' || (typeof post.category === 'object' ? (post.category[currentLang] || post.category['mr'] || post.category['en']) : post.category) === 'आरोग्य आणि आयुर्वेद' || (typeof post.category === 'object' ? (post.category[currentLang] || post.category['mr'] || post.category['en']) : post.category) === 'स्वास्थ्य और आयुर्वेद' ? 'bg-emerald-100/80 text-emerald-700' :
                     'bg-orange-100/80 text-orange-700'
                   }`}>
-                    {post.category}
+                    {typeof post.category === 'object' ? (post.category[currentLang] || post.category['mr'] || post.category['en']) : post.category}
                   </span>
                 </div>
                 <button
@@ -312,24 +385,24 @@ const Blog = () => {
                   <Calendar className="h-4 w-4 mr-1" />
                   <span className="mr-4">{post.date}</span>
                   <Clock className="h-4 w-4 mr-1" />
-                  <span>{post.readTime}</span>
+                  <span>{post.read_time || post.readTime}</span>
                 </div>
                 
                 <h2 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2 hover:text-emerald-600 transition-colors">
                   <Link to={`/blog/${post.id}`}>
-                    {post.title}
+                    {typeof post.title === 'object' ? (post.title[currentLang] || post.title['mr'] || post.title['en']) : post.title}
                   </Link>
                 </h2>
                 
                 <p className="text-slate-600 mb-4 line-clamp-3">
-                  {post.excerpt}
+                  {typeof post.excerpt === 'object' ? (post.excerpt[currentLang] || post.excerpt['mr'] || post.excerpt['en']) : post.excerpt}
                 </p>
                 
                 <Link 
                   to={`/blog/${post.id}`}
                   className="inline-flex items-center text-emerald-600 font-semibold hover:text-emerald-700 transition-colors hover:translate-x-1"
                 >
-                  अधिक वाचा
+                  {currentLang === 'en' ? 'Read More' : currentLang === 'mr' ? 'अधिक वाचा' : 'और पढ़ें'}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </div>
@@ -339,7 +412,13 @@ const Blog = () => {
 
         {posts.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-slate-500 text-lg font-medium">No blog posts found.</p>
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full mb-6">
+              <span className="text-4xl">📝</span>
+            </div>
+            <p className="text-2xl font-bold text-emerald-600 mb-3">अजून एकही ब्लॉग उपलब्ध नाही</p>
+            <p className="text-lg text-white font-medium bg-gradient-to-r from-emerald-500 to-teal-600 px-6 py-3 rounded-full inline-block shadow-lg">
+              नवीन ब्लॉग जोडण्यासाठी 'Write New Blog' वर क्लिक करा!
+            </p>
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { ShoppingBag, ExternalLink, Plus, Trash2, X } from 'lucide-react'
 import { useSearchParams } from 'react-router-dom'
+import { supabase } from '../supabaseClient'
 
 const Categories = () => {
   const [searchParams] = useSearchParams()
@@ -11,158 +12,22 @@ const Categories = () => {
   const categories = ['All', 'Electronics', 'Home & Kitchen', 'Fashion', 'Health & Wellness', 'Sports & Outdoors']
   const storeOptions = ['Amazon', 'Flipkart', 'Meesho', 'Myntra', 'AJIO']
 
-  // Initial products data (fallback if localStorage is empty)
-  const initialProducts = [
-    {
-      id: 1,
-      title: "Sony WH-1000XM5 Wireless Headphones",
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop",
-      category: "Electronics",
-      description: "Industry-leading noise cancellation with exceptional sound quality and 30-hour battery life.",
-      price: "₹29,990",
-      store: "Amazon",
-      affiliateLink: "https://www.amazon.in/dp/B09XS7JWHH"
-    },
-    {
-      id: 2,
-      title: "Instant Pot Duo 7-in-1 Cooker",
-      image: "https://images.unsplash.com/photo-1585515320310-259814833e62?w=400&h=300&fit=crop",
-      category: "Home & Kitchen",
-      description: "Multi-use pressure cooker that speeds up cooking by 2-6 times while preserving nutrients.",
-      price: "₹8,999",
-      store: "Amazon",
-      affiliateLink: "https://www.amazon.in/dp/B00W4M8P5O"
-    },
-    {
-      id: 3,
-      title: "Levi's 511 Slim Fit Jeans",
-      image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=300&fit=crop",
-      category: "Fashion",
-      description: "Classic slim fit jeans with stretch comfort and timeless style for everyday wear.",
-      price: "₹3,499",
-      store: "Myntra",
-      affiliateLink: "https://www.myntra.com/jeans/levis/levis-men-slim-fit-jeans/1234567"
-    },
-    {
-      id: 4,
-      title: "Fitbit Charge 5 Fitness Tracker",
-      image: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=400&h=300&fit=crop",
-      category: "Health & Wellness",
-      description: "Advanced health monitoring with ECG, stress management, and built-in GPS.",
-      price: "₹14,999",
-      store: "Amazon",
-      affiliateLink: "https://www.amazon.in/dp/B094G5GLKJ"
-    },
-    {
-      id: 5,
-      title: "Yoga Mat Premium 6mm",
-      image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=400&h=300&fit=crop",
-      category: "Health & Wellness",
-      description: "Non-slip, eco-friendly yoga mat with extra cushioning for comfortable practice.",
-      price: "₹1,299",
-      store: "Flipkart",
-      affiliateLink: "https://www.flipkart.com/yoga-mat-premium-6mm/p/itme123456789"
-    },
-    {
-      id: 6,
-      title: "Nike Air Zoom Pegasus Running Shoes",
-      image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop",
-      category: "Sports & Outdoors",
-      description: "Responsive cushioning and breathable mesh for comfortable runs on any terrain.",
-      price: "₹10,995",
-      store: "Myntra",
-      affiliateLink: "https://www.myntra.com/sports-shoes/nike/nike-air-zoom-pegasus/2345678"
-    },
-    {
-      id: 7,
-      title: "Apple MacBook Air M2",
-      image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=300&fit=crop",
-      category: "Electronics",
-      description: "Ultra-thin laptop with powerful M2 chip, 18-hour battery, and stunning Liquid Retina display.",
-      price: "₹1,19,900",
-      store: "Amazon",
-      affiliateLink: "https://www.amazon.in/dp/B0B3C7DQZG"
-    },
-    {
-      id: 8,
-      title: "Philips Air Fryer XXL",
-      image: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=400&h=300&fit=crop",
-      category: "Home & Kitchen",
-      description: "Large capacity air fryer for healthier cooking with rapid fat removal technology.",
-      price: "₹12,999",
-      store: "Flipkart",
-      affiliateLink: "https://www.flipkart.com/philips-air-fryer-xxl/p/itme987654321"
-    },
-    {
-      id: 9,
-      title: "Columbia Waterproof Jacket",
-      image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&h=300&fit=crop",
-      category: "Sports & Outdoors",
-      description: "Waterproof, breathable jacket with Omni-Tech technology for all-weather protection.",
-      price: "₹6,499",
-      store: "Amazon",
-      affiliateLink: "https://www.amazon.in/dp/B08X7YZ5FQ"
-    },
-    {
-      id: 10,
-      title: "Ray-Ban Aviator Sunglasses",
-      image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop",
-      category: "Fashion",
-      description: "Iconic aviator style with UV protection and crystal-clear lenses for timeless elegance.",
-      price: "₹9,890",
-      store: "Flipkart",
-      affiliateLink: "https://www.flipkart.com/ray-ban-aviator-sunglasses/p/itme456789123"
-    },
-    {
-      id: 11,
-      title: "JBL Flip 6 Portable Speaker",
-      image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=300&fit=crop",
-      category: "Electronics",
-      description: "Waterproof portable speaker with powerful bass and 12-hour playtime.",
-      price: "₹9,999",
-      store: "Amazon",
-      affiliateLink: "https://www.amazon.in/dp/B09Z1JH5XK"
-    },
-    {
-      id: 12,
-      title: "NordicTrack Treadmill",
-      image: "https://images.unsplash.com/photo-1576678927484-cc907957088c?w=400&h=300&fit=crop",
-      category: "Sports & Outdoors",
-      description: "Professional-grade treadmill with interactive training and advanced cushioning.",
-      price: "₹89,999",
-      store: "Amazon",
-      affiliateLink: "https://www.amazon.in/dp/B08N5KWB9H"
-    },
-    {
-      id: 13,
-      title: "U.S. Polo Assn. Women Brand Print Sweatshirt",
-      image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500",
-      category: "Fashion",
-      description: "Premium pink printed sweatshirt with a round neck and long sleeves.",
-      price: "₹1,999",
-      store: "AJIO",
-      affiliateLink: "https://www.ajio.com"
-    },
-    {
-      id: 14,
-      title: "NIKE Men Court Vision Low Shoes",
-      image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=500",
-      category: "Fashion",
-      description: "Classic white sporty sneakers, perfect for basketball and casual wear.",
-      price: "₹5,995",
-      store: "AJIO",
-      affiliateLink: "https://www.ajio.com"
-    }
-  ]
-
-  // Load products from localStorage on mount
+  // Fetch products from Supabase on mount
   useEffect(() => {
-    const savedProducts = localStorage.getItem('sallagar_products')
-    if (savedProducts) {
-      setProducts(JSON.parse(savedProducts))
-    } else {
-      setProducts(initialProducts)
+    const fetchProducts = async () => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false })
+      
+      if (error) {
+        console.error('Error fetching products:', error)
+      } else {
+        setProducts(data || [])
+      }
     }
+
+    fetchProducts()
   }, [])
 
   // Set selected category from URL query param on mount
@@ -173,37 +38,57 @@ const Categories = () => {
     }
   }, [searchParams, categories])
 
-  // Save products to localStorage whenever they change
-  useEffect(() => {
-    if (products.length > 0) {
-      localStorage.setItem('sallagar_products', JSON.stringify(products))
-    }
-  }, [products])
 
   // Form state for new product
   const [newProduct, setNewProduct] = useState({
     title: '',
-    image: '',
-    category: 'Electronics',
+    image_url: '',
+    category: '',
     store: 'Amazon',
     price: '',
     description: '',
     affiliateLink: ''
   })
 
-  // Handle adding a new product
-  const handleAddProduct = (e) => {
+  // Handle adding a new product to Supabase
+  const handleAddProduct = async (e) => {
     e.preventDefault()
+    
     const productToAdd = {
-      ...newProduct,
-      id: Date.now() // Generate unique ID based on timestamp
+      title: newProduct.title,
+      description: newProduct.description,
+      price: newProduct.price,
+      image_url: newProduct.image_url,
+      category: newProduct.category,
+      store: newProduct.store,
+      affiliate_link: newProduct.affiliateLink
     }
-    setProducts([...products, productToAdd])
+
+    const { data, error } = await supabase
+      .from('products')
+      .insert([productToAdd])
+      .select()
+
+    if (error) {
+      console.error('Error adding product:', error)
+      alert('Failed to add product. Please try again.')
+    } else {
+      // Refresh products from Supabase
+      const { data: refreshedData } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false })
+      
+      if (refreshedData) {
+        setProducts(refreshedData)
+      }
+    }
+
     // Reset form
     setNewProduct({
       title: '',
-      image: '',
-      category: 'Electronics',
+      image_url: '',
+      category: '',
       store: 'Amazon',
       price: '',
       description: '',
@@ -212,10 +97,28 @@ const Categories = () => {
     setShowAdminForm(false)
   }
 
-  // Handle deleting a product
-  const handleDeleteProduct = (id) => {
+  // Handle deleting a product from Supabase
+  const handleDeleteProduct = async (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
-      setProducts(products.filter(product => product.id !== id))
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('id', id)
+
+      if (error) {
+        console.error('Error deleting product:', error)
+        alert('Failed to delete product. Please try again.')
+      } else {
+        // Refresh products from Supabase
+        const { data: refreshedData } = await supabase
+          .from('products')
+          .select('*')
+          .order('created_at', { ascending: false })
+        
+        if (refreshedData) {
+          setProducts(refreshedData)
+        }
+      }
     }
   }
 
@@ -286,17 +189,6 @@ const Categories = () => {
               </>
             )}
           </button>
-          <button
-            onClick={() => {
-              if (window.confirm('This will reset all products to the default list. Any custom products you added will be lost. Continue?')) {
-                localStorage.removeItem('sallagar_products')
-                setProducts(initialProducts)
-              }
-            }}
-            className="flex items-center gap-2 glassmorphism text-slate-700 px-5 py-3 rounded-2xl font-semibold transition-all duration-500 ease-out hover:-translate-y-1 hover:scale-105 shadow-md hover:shadow-xl hover:shadow-emerald-200/50"
-          >
-            Reset to Default Products
-          </button>
         </div>
 
         {/* Admin Form */}
@@ -324,24 +216,27 @@ const Categories = () => {
                   <input
                     type="url"
                     required
-                    value={newProduct.image}
-                    onChange={(e) => setNewProduct({...newProduct, image: e.target.value})}
+                    value={newProduct.image_url}
+                    onChange={(e) => setNewProduct({...newProduct, image_url: e.target.value})}
                     className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
                     placeholder="https://example.com/image.jpg"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">Category</label>
-                  <select
-                    required
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Category (optional)</label>
+                  <input
+                    type="text"
                     value={newProduct.category}
                     onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
                     className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
-                  >
+                    placeholder="Enter or select category"
+                    list="category-options"
+                  />
+                  <datalist id="category-options">
                     {categories.filter(cat => cat !== 'All').map((category) => (
                       <option key={category} value={category}>{category}</option>
                     ))}
-                  </select>
+                  </datalist>
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-slate-700 mb-2">Store</label>
@@ -437,7 +332,7 @@ const Categories = () => {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-10"></div>
                 <img 
-                  src={product.image} 
+                  src={product.image_url || product.image} 
                   alt={product.title}
                   className="w-full h-48 object-cover"
                 />

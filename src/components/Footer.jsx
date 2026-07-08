@@ -28,7 +28,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a 
-                href="https://youtube.com/@sallagar" 
+                href="http://www.youtube.com/@fanu1931" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-gray-400 hover:text-red-500 transition-all duration-300 hover:scale-110"
@@ -36,7 +36,7 @@ const Footer = () => {
                 <FaYoutube className="h-5 w-5" />
               </a>
               <a 
-                href="https://instagram.com/sallagar" 
+                href="https://www.instagram.com/fanug1931?igsh=YjU1ZGMxd2hweDZn" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-gray-400 hover:text-pink-500 transition-all duration-300 hover:scale-110"
@@ -44,7 +44,7 @@ const Footer = () => {
                 <FaInstagram className="h-5 w-5" />
               </a>
               <a 
-                href="https://pinterest.com/sallagar" 
+                href="https://pin.it/28rYVXl2v" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-gray-400 hover:text-red-600 transition-all duration-300 hover:scale-110"
@@ -52,7 +52,7 @@ const Footer = () => {
                 <FaPinterest className="h-5 w-5" />
               </a>
               <a 
-                href="https://sharechat.com/sallagar" 
+                href="https://sharechat.com/profile/fanu1931?d=n" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-gray-400 hover:text-emerald-400 transition-all duration-300 hover:scale-110"
@@ -60,7 +60,7 @@ const Footer = () => {
                 <FaRegComments className="h-5 w-5" />
               </a>
               <a 
-                href="https://whatsapp.com/channel/sallagar" 
+                href="https://whatsapp.com/channel/0029VbCZhw48fewonRkeL034" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-gray-400 hover:text-green-500 transition-all duration-300 hover:scale-110"
@@ -68,7 +68,7 @@ const Footer = () => {
                 <FaWhatsapp className="h-5 w-5" />
               </a>
               <a 
-                href="https://t.me/sallagar" 
+                href="https://t.me/fanu1931" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-gray-400 hover:text-blue-400 transition-all duration-300 hover:scale-110"

@@ -31,17 +31,10 @@ const Hero = () => {
           }
         `}
       </style>
-      <section className="relative overflow-hidden py-16 lg:py-20 bg-pink-50">
-      {/* Premium Floating Elements */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-400/20 rounded-full blur-2xl animate-float-slow"></div>
-      <div className="absolute top-40 right-20 w-96 h-96 bg-indigo-400/15 rounded-full blur-3xl animate-float-delayed"></div>
-      <div className="absolute bottom-20 left-1/4 w-64 h-64 bg-purple-400/18 rounded-full blur-2xl animate-float-slow" style={{animationDelay: '2s'}}></div>
-      <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-teal-400/20 rounded-full blur-2xl animate-float-delayed" style={{animationDelay: '3s'}}></div>
-      
-      {/* Original Background Elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 animate-pulse-glow"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-400/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 animate-pulse-glow"></div>
-      <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-amber-400/15 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse-glow"></div>
+      <section className="relative overflow-hidden py-16 lg:py-20 bg-gradient-to-r from-[#064e3b] via-[#022c22] to-[#1e3a1e]">
+      {/* Premium Ambient Light Leaks */}
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 animate-pulse"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-amber-400/15 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 animate-pulse" style={{animationDelay: '1s'}}></div>
       
       {/* 3D Floating Transparent Elements */}
       {/* Floating Circles */}
@@ -75,57 +68,57 @@ const Hero = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           {/* Trust Badge */}
-          <div className="inline-flex items-center glassmorphism px-5 py-2.5 rounded-full shadow-lg shadow-emerald-200/50 mb-10 animate-float">
-            <Shield className="h-5 w-5 text-emerald-600 mr-2" />
-            <span className="text-sm font-medium text-slate-700">Trusted by 10,000+ Readers</span>
+          <div className="inline-flex items-center bg-white/10 backdrop-blur-md border border-white/20 px-5 py-2.5 rounded-full shadow-lg shadow-amber-500/20 mb-10 animate-float">
+            <Shield className="h-5 w-5 text-amber-300 mr-2" />
+            <span className="text-sm font-medium text-white">Trusted by 10,000+ Readers</span>
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 mb-6 tracking-tight animate-gradient py-2">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white mb-6 tracking-tight drop-shadow-lg" style={{textShadow: '0 0 40px rgba(255,255,255,0.3)'}}>
             आयुष्याचा खरा सल्लागार
           </h1>
 
           {/* Tagline */}
-          <p className="text-2xl sm:text-3xl bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-emerald-600 mb-6 max-w-3xl mx-auto font-light">
+          <p className="text-2xl sm:text-3xl text-emerald-300 mb-6 max-w-3xl mx-auto font-light">
             Changle Vichar, Health, Ayurveda, ani Motivation
           </p>
 
           {/* Subheading */}
-          <p className="text-lg text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-amber-200/90 mb-10 max-w-2xl mx-auto leading-relaxed">
             Sallagar helps you discover the path to a better life through positive thoughts, 
             Ayurvedic wisdom, and motivational insights. Transform your life with confidence.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <Link to="/blog" className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-500 ease-out hover:-translate-y-1 hover:scale-105 shadow-lg shadow-emerald-500/30 hover:shadow-2xl hover:shadow-emerald-500/50 flex items-center">
+            <Link to="/blog" className="bg-gradient-to-r from-emerald-400 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-105 shadow-lg shadow-emerald-500/40 hover:shadow-2xl hover:shadow-emerald-500/60 flex items-center animate-pulse">
               Explore Blog
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
-            <Link to="/categories" className="glassmorphism text-emerald-600 px-8 py-4 rounded-2xl font-semibold border-2 border-emerald-200 hover:border-emerald-400 hover:bg-emerald-50/50 transition-all duration-500 ease-out hover:-translate-y-1 hover:scale-105 shadow-md hover:shadow-xl hover:shadow-emerald-200/50">
+            <Link to="/categories" className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-105 shadow-lg">
               Browse Categories
             </Link>
           </div>
 
           {/* Trust Indicators */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="glassmorphism rounded-2xl p-6 shadow-md hover:shadow-2xl hover:shadow-emerald-200/50 transition-all duration-500 ease-out hover:-translate-y-3 hover:scale-[1.02]">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-white/10">
               <div className="flex items-center justify-center mb-3">
-                <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                <Star className="h-5 w-5 text-yellow-400 fill-current" />
+                <Star className="h-5 w-5 text-amber-300 fill-current" />
+                <Star className="h-5 w-5 text-amber-300 fill-current" />
+                <Star className="h-5 w-5 text-amber-300 fill-current" />
+                <Star className="h-5 w-5 text-amber-300 fill-current" />
+                <Star className="h-5 w-5 text-amber-300 fill-current" />
               </div>
-              <p className="text-sm font-medium text-slate-700">500+ Inspiring Articles</p>
+              <p className="text-sm font-medium text-white">500+ Inspiring Articles</p>
             </div>
-            <div className="glassmorphism rounded-2xl p-6 shadow-md hover:shadow-2xl hover:shadow-emerald-200/50 transition-all duration-500 ease-out hover:-translate-y-3 hover:scale-[1.02]">
-              <CheckCircle className="h-10 w-10 text-emerald-500 mb-3 mx-auto" />
-              <p className="text-sm font-medium text-slate-700">100% Authentic Content</p>
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-white/10">
+              <CheckCircle className="h-10 w-10 text-emerald-300 mb-3 mx-auto" />
+              <p className="text-sm font-medium text-white">100% Authentic Content</p>
             </div>
-            <div className="glassmorphism rounded-2xl p-6 shadow-md hover:shadow-2xl hover:shadow-emerald-200/50 transition-all duration-500 ease-out hover:-translate-y-3 hover:scale-[1.02]">
-              <Shield className="h-10 w-10 text-emerald-600 mb-3 mx-auto" />
-              <p className="text-sm font-medium text-slate-700">Expert Wellness Team</p>
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-white/10">
+              <Shield className="h-10 w-10 text-emerald-300 mb-3 mx-auto" />
+              <p className="text-sm font-medium text-white">Expert Wellness Team</p>
             </div>
           </div>
         </div>
