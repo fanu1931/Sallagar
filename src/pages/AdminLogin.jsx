@@ -97,14 +97,6 @@ const AdminLogin = () => {
           </button>
         </div>
 
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <p className="text-xs text-slate-500 text-center">
-            Default password: <span className="font-mono bg-slate-100 px-2 py-1 rounded">admin123</span>
-          </p>
-          <p className="text-xs text-slate-400 text-center mt-1">
-            Please change this in a production environment
-          </p>
-        </div>
       </div>
     </div>
   )

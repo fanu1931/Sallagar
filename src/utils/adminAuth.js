@@ -32,7 +32,7 @@ export const clearAdminStatus = () => {
  */
 export const adminLogin = (password) => {
   // Simple password check - in production, use proper authentication
-  const ADMIN_PASSWORD = 'admin123'; // Change this to a secure password
+  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'admin123'; // Fallback for local development
   
   if (password === ADMIN_PASSWORD) {
     setAdminStatus(true);
