@@ -28,11 +28,12 @@ export const clearAdminStatus = () => {
  * Simple admin login function
  * In a production environment, this should be replaced with proper authentication
  * @param {string} password - The admin password
+ * @param {string} dbPassword - The admin password from database (optional)
  * @returns {boolean} - True if login successful, false otherwise
  */
-export const adminLogin = (password) => {
-  // Simple password check - in production, use proper authentication
-  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'admin123'; // Fallback for local development
+export const adminLogin = (password, dbPassword = null) => {
+  // Use database password if provided, otherwise fallback to environment variable
+  const ADMIN_PASSWORD = dbPassword || import.meta.env.VITE_ADMIN_PASSWORD || 'admin123'; // Fallback for local development
   
   if (password === ADMIN_PASSWORD) {
     setAdminStatus(true);

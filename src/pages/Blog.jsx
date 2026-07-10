@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { Calendar, Clock, ArrowRight, Plus, Trash2, X, Loader2, Shield, Edit2 } from 'lucide-react'
+import { Calendar, Clock, ArrowRight, Plus, Trash2, X, Loader2, Shield, Edit2, Lock } from 'lucide-react'
 import { supabase } from '../supabaseClient'
 import { isAdmin, adminLogout } from '../utils/adminAuth'
 
@@ -14,6 +14,15 @@ const Blog = () => {
   const [editingPost, setEditingPost] = useState(null)
   const [selectedDate, setSelectedDate] = useState(null)
   const [filterType, setFilterType] = useState('all')
+  const [showPasswordForm, setShowPasswordForm] = useState(false)
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  })
+  const [passwordError, setPasswordError] = useState('')
+  const [passwordSuccess, setPasswordSuccess] = useState('')
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false)
 
   const categoryOptions = [
     'Good Thoughts',
