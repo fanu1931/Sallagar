@@ -270,7 +270,8 @@ const Blog = () => {
       image: post.image_url || post.image || '',
       category: post.category || 'Good Thoughts',
       readTime: post.read_time || post.readTime || '',
-      language: post.language || 'en'
+      language: post.language || 'en',
+      hasAffiliate: post.has_affiliate || false
     })
   }
 
@@ -288,7 +289,8 @@ const Blog = () => {
     image: '',
     category: 'Good Thoughts',
     readTime: '',
-    language: 'en'
+    language: 'en',
+    hasAffiliate: false
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -372,7 +374,7 @@ const Blog = () => {
 
     try {
       // Map manual inputs directly to database structure
-      const { titleEn, titleMr, titleHi, excerptEn, excerptMr, excerptHi, contentEn, contentMr, contentHi, image, category, readTime, language } = newPost
+      const { titleEn, titleMr, titleHi, excerptEn, excerptMr, excerptHi, contentEn, contentMr, contentHi, image, category, readTime, language, hasAffiliate } = newPost
       
       const payload = {
         title: { en: titleEn, mr: titleMr, hi: titleHi },
@@ -381,7 +383,8 @@ const Blog = () => {
         image_url: image, // Use the image URL directly (already from Supabase Storage or converted URL)
         category: category,
         read_time: readTime,
-        language: language
+        language: language,
+        has_affiliate: hasAffiliate
       }
 
       console.log('Payload to be sent to Supabase:', JSON.stringify(payload, null, 2))
@@ -444,7 +447,8 @@ const Blog = () => {
           image: '',
           category: 'Good Thoughts',
           readTime: '',
-          language: 'en'
+          language: 'en',
+          hasAffiliate: false
         })
         setShowAdminForm(false)
         setEditingPost(null)
@@ -987,6 +991,18 @@ const Blog = () => {
                     className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
                     placeholder="5 min read"
                   />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={newPost.hasAffiliate}
+                      onChange={(e) => setNewPost({...newPost, hasAffiliate: e.target.checked})}
+                      className="w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                    />
+                    <span className="text-sm font-semibold text-slate-700">Contains Affiliate Links</span>
+                  </label>
+                  <p className="text-xs text-slate-500 mt-1 ml-8">Check this if the blog post contains affiliate links</p>
                 </div>
               </div>
               <div className="flex gap-3 pt-2">
