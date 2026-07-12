@@ -4,6 +4,8 @@ import { Calendar, Clock, ArrowRight, Plus, Trash2, X, Loader2, Shield, Edit2, L
 import { supabase } from '../supabaseClient'
 import { isAdmin, adminLogout } from '../utils/adminAuth'
 
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+
 const Blog = () => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -70,12 +72,26 @@ const Blog = () => {
       imageUrl = imageUrl.url || imageUrl.src || JSON.stringify(imageUrl)
     }
     
-    // If it's a string, convert Unsplash URLs
+    // If it's a string, process it
     if (typeof imageUrl === 'string') {
-      return convertUnsplashUrl(imageUrl)
+      const convertedUrl = convertUnsplashUrl(imageUrl)
+      
+      // If it's already a full URL (http/https), return it
+      if (convertedUrl && (convertedUrl.startsWith('http://') || convertedUrl.startsWith('https://'))) {
+        return convertedUrl
+      }
+      
+      // If it's just a filename (from Supabase Storage), construct the public URL
+      if (convertedUrl && !convertedUrl.startsWith('http://') && !convertedUrl.startsWith('https://')) {
+        return `${supabaseUrl}/storage/v1/object/public/blog-images/${convertedUrl}`
+      }
+      
+      // Fallback for invalid URLs
+      return 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200'
     }
     
-    return imageUrl
+    // Fallback for invalid or missing images
+    return 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200'
   }
 
   // Helper function to safely extract language-specific text
@@ -323,7 +339,7 @@ const Blog = () => {
       // Generate unique file path
       const fileExt = file.name.split('.').pop()
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}.${fileExt}`
-      const filePath = `blog-images/${fileName}`
+      const filePath = fileName
 
       // Upload to Supabase Storage
       const { data: uploadData, error: uploadError } = await supabase.storage
@@ -993,16 +1009,18 @@ const Blog = () => {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={newPost.hasAffiliate}
+                  <div className="flex items-center gap-2 my-4">
+                    <input 
+                      type="checkbox" 
+                      id="has_affiliate"
+                      checked={newPost.hasAffiliate} 
                       onChange={(e) => setNewPost({...newPost, hasAffiliate: e.target.checked})}
-                      className="w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                      className="w-4 h-4 text-emerald-500 rounded border-gray-300 focus:ring-emerald-500 bg-slate-800"
                     />
-                    <span className="text-sm font-semibold text-slate-700">Contains Affiliate Links</span>
-                  </label>
-                  <p className="text-xs text-slate-500 mt-1 ml-8">Check this if the blog post contains affiliate links</p>
+                    <label htmlFor="has_affiliate" className="text-sm font-medium text-gray-200 cursor-pointer">
+                      Contains Affiliate Links (Shows Disclosure & Product Banner)
+                    </label>
+                  </div>
                 </div>
               </div>
               <div className="flex gap-3 pt-2">

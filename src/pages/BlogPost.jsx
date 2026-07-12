@@ -4,6 +4,8 @@ import { Calendar, Clock, ArrowLeft, Share2, Tag, Heart, Edit2 } from 'lucide-re
 import { supabase } from '../supabaseClient'
 import { isAdmin } from '../utils/adminAuth'
 
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+
 const BlogPost = () => {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -21,12 +23,26 @@ const BlogPost = () => {
       imageUrl = imageUrl.url || imageUrl.src || JSON.stringify(imageUrl)
     }
     
-    // If it's a string, convert Unsplash URLs
+    // If it's a string, process it
     if (typeof imageUrl === 'string') {
-      return convertUnsplashUrl(imageUrl)
+      const convertedUrl = convertUnsplashUrl(imageUrl)
+      
+      // If it's already a full URL (http/https), return it
+      if (convertedUrl && (convertedUrl.startsWith('http://') || convertedUrl.startsWith('https://'))) {
+        return convertedUrl
+      }
+      
+      // If it's just a filename (from Supabase Storage), construct the public URL
+      if (convertedUrl && !convertedUrl.startsWith('http://') && !convertedUrl.startsWith('https://')) {
+        return `${supabaseUrl}/storage/v1/object/public/blog-images/${convertedUrl}`
+      }
+      
+      // Fallback for invalid URLs
+      return 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200'
     }
     
-    return imageUrl
+    // Fallback for invalid or missing images
+    return 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200'
   }
 
   // Helper function to safely extract language-specific text
@@ -213,7 +229,7 @@ const BlogPost = () => {
         </div>
 
         {/* Affiliate Disclosure */}
-        {post.has_affiliate && (
+        {post?.has_affiliate === true && (
           <div className="bg-white/5 backdrop-blur-md border border-amber-500/20 rounded-2xl p-4 mb-8 hover:shadow-lg hover:shadow-amber-500/20 transition-all duration-300">
             <div className="flex">
               <div className="flex-shrink-0">
@@ -235,7 +251,7 @@ const BlogPost = () => {
         />
 
         {/* Affiliate CTA Section */}
-        {post.has_affiliate && (
+        {post?.has_affiliate === true && (
           <div className="mt-12 mb-8">
             <div className="bg-gradient-to-r from-emerald-500/20 to-amber-500/20 backdrop-blur-md border border-white/10 rounded-2xl p-8 text-center">
               <h3 className="text-2xl font-bold text-white mb-4">
