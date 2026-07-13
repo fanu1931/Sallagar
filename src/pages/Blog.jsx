@@ -235,6 +235,13 @@ const Blog = () => {
     return () => window.removeEventListener('storage', checkAdminStatus)
   }, [])
 
+  // Route protection: Redirect to home if not admin
+  useEffect(() => {
+    if (!isAdmin()) {
+      navigate('/')
+    }
+  }, [navigate])
+
   // Handle edit from BlogPost page
   useEffect(() => {
     const state = location?.state

@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Search, Menu, Sparkles, X } from 'lucide-react'
+import { Search, Menu, Sparkles, X, Lock, Shield } from 'lucide-react'
+import { supabase } from '../supabaseClient'
 
 const Header = () => {
   const navigate = useNavigate()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -19,6 +24,40 @@ const Header = () => {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleSearch(e)
+    }
+  }
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    try {
+      const { data, error } = await supabase
+        .from('admin_settings')
+        .select('admin_password')
+        .eq('id', 'config')
+        .single();
+
+      if (!error && data) {
+        if (password === data.admin_password) {
+          localStorage.setItem('is_admin', 'true');
+          setIsModalOpen(false);
+          setPassword('');
+          window.location.href = '/blog';
+        } else {
+          setError("Wrong admin credentials!");
+          setPassword('');
+        }
+      } else {
+        console.error("Supabase connection error:", error);
+        setError("Database connection failed. Check your network.");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false)
     }
   }
   return (
@@ -95,12 +134,88 @@ const Header = () => {
                 <Search className="h-5 w-5" />
               </button>
             </div>
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="p-2.5 text-white hover:text-amber-400 hover:bg-white/10 rounded-full transition-all duration-200 hover:scale-110 shadow-sm hover:shadow-white/20"
+              title="Admin Login"
+            >
+              <Lock className="h-5 w-5" />
+            </button>
             <button className="md:hidden p-2.5 text-white hover:text-amber-400 hover:bg-white/10 rounded-full transition-all duration-200 hover:scale-110 shadow-sm hover:shadow-white/20">
               <Menu className="h-6 w-6" />
             </button>
           </div>
         </div>
       </div>
+
+      {/* Password Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4 animate-in fade-in zoom-in duration-200">
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full mb-4">
+                <Shield className="h-8 w-8 text-white" />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-900 mb-2">Admin Login</h2>
+              <p className="text-slate-600">Enter your password to access admin features</p>
+            </div>
+
+            <form onSubmit={handlePasswordSubmit} className="space-y-4">
+              <div>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
+                    placeholder="Enter admin password"
+                    required
+                    autoFocus
+                  />
+                </div>
+              </div>
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+                  {error}
+                </div>
+              )}
+
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsModalOpen(false)
+                    setPassword('')
+                    setError('')
+                  }}
+                  className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-3 rounded-xl font-semibold transition-all duration-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? (
+                    <>
+                      <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      Verifying...
+                    </>
+                  ) : (
+                    <>
+                      <Shield className="h-5 w-5" />
+                      Login
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </header>
   )
 }
