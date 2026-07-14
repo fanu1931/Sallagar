@@ -243,7 +243,7 @@ const Blog = () => {
         link: p.link || p.affiliateLink || ''
       })).concat(
         (post.recommended_products || []).length < 3 
-          ? Array(3 - (post.recommended_products || []).length).fill({ name: '', image: '', link: '' })
+          ? Array(3 - (post.recommended_products || []).length).fill(null).map(() => ({ name: '', image: '', link: '' }))
           : []
       )
     })
