@@ -20,33 +20,33 @@ const Contact = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Contact Information */}
           <div className="glassmorphism rounded-3xl shadow-lg p-8 hover:shadow-2xl hover:shadow-purple-200/50 transition-all duration-500 ease-out hover:-translate-y-2">
-            <h2 className="text-2xl font-bold text-slate-900 mb-6">Get in Touch</h2>
+            <h2 className="text-2xl font-bold text-white mb-6">Get in Touch</h2>
             
             <div className="space-y-6">
               <div className="flex items-start">
                 <Mail className="h-6 w-6 text-purple-600 mr-4 flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-semibold text-slate-900 mb-1">Email</h3>
-                  <p className="text-slate-600">contact@sallagar.com</p>
-                  <p className="text-sm text-slate-500">We respond within 24 hours</p>
+                  <h3 className="font-semibold text-white mb-1">Email</h3>
+                  <p className="text-gray-100">contact@sallagar.com</p>
+                  <p className="text-sm text-gray-200">We respond within 24 hours</p>
                 </div>
               </div>
               
               <div className="flex items-start">
                 <Phone className="h-6 w-6 text-purple-600 mr-4 flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-semibold text-slate-900 mb-1">Phone</h3>
-                  <p className="text-slate-600">+91 XXXXX XXXXX</p>
-                  <p className="text-sm text-slate-500">Mon-Fri, 9am-6pm IST</p>
+                  <h3 className="font-semibold text-white mb-1">Phone</h3>
+                  <p className="text-gray-100">+91 XXXXX XXXXX</p>
+                  <p className="text-sm text-gray-200">Mon-Fri, 9am-6pm IST</p>
                 </div>
               </div>
               
               <div className="flex items-start">
                 <MapPin className="h-6 w-6 text-purple-600 mr-4 flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-semibold text-slate-900 mb-1">Location</h3>
-                  <p className="text-slate-600">Mumbai, India</p>
-                  <p className="text-sm text-slate-500">We operate remotely</p>
+                  <h3 className="font-semibold text-white mb-1">Location</h3>
+                  <p className="text-gray-100">Mumbai, India</p>
+                  <p className="text-sm text-gray-200">We operate remotely</p>
                 </div>
               </div>
             </div>
@@ -54,11 +54,11 @@ const Contact = () => {
 
           {/* Contact Form */}
           <div className="glassmorphism rounded-3xl shadow-lg p-8 hover:shadow-2xl hover:shadow-emerald-200/50 transition-all duration-500 ease-out hover:-translate-y-2">
-            <h2 className="text-2xl font-bold text-slate-900 mb-6">Send us a Message</h2>
+            <h2 className="text-2xl font-bold text-white mb-6">Send us a Message</h2>
             
             <form className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-semibold text-slate-700 mb-2">
+                <label htmlFor="name" className="block text-sm font-semibold text-white mb-2">
                   Name
                 </label>
                 <input
