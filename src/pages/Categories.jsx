@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { ShoppingBag, ExternalLink, Plus, Trash2, X, Edit, XCircle, Shield, Edit2, Search } from 'lucide-react'
-import { useSearchParams } from 'react-router-dom'
+import { ShoppingBag, ExternalLink, Plus, Trash2, X, Edit, XCircle, Shield, Edit2, Search, Home } from 'lucide-react'
+import { useSearchParams, Link } from 'react-router-dom'
 import { supabase } from '../supabaseClient'
 import { isAdmin, adminLogout } from '../utils/adminAuth'
 
@@ -356,9 +356,16 @@ const Categories = () => {
         <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 animate-pulse-glow"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-400/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 animate-pulse-glow"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center mb-2">
-            <ShoppingBag className="h-7 w-7 sm:h-8 sm:w-8 mr-3" />
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight flex items-center gap-2">Categories</h1>
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center">
+              <ShoppingBag className="h-7 w-7 sm:h-8 sm:w-8 mr-3" />
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight flex items-center gap-2">Categories</h1>
+            </div>
+            <Link to="/" className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium">
+              <Home className="h-4 w-4" />
+              <span className="hidden sm:inline">Back to Home</span>
+              <span className="sm:hidden">Home</span>
+            </Link>
           </div>
           <p className="text-xs sm:text-sm text-slate-200 mt-1 max-w-2xl font-light">
             Browse our recommended products by category
@@ -575,14 +582,14 @@ const Categories = () => {
 
         {/* Skeleton Loader */}
         {loading && (
-          <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+          <div className="mt-4 grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1.5 sm:gap-6">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="bg-purple-950/40 border border-purple-500/20 rounded-3xl shadow-md overflow-hidden">
-                <div className="h-56 bg-slate-200 dark:bg-slate-700 animate-pulse" />
-                <div className="p-2 sm:p-5 dark:bg-slate-800">
-                  <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-2" />
-                  <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-2" />
-                  <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-2/3" />
+                <div className="h-32 sm:h-56 bg-slate-200 dark:bg-slate-700 animate-pulse" />
+                <div className="p-1 sm:p-5 dark:bg-slate-800">
+                  <div className="h-2 sm:h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1 sm:mb-2" />
+                  <div className="h-2 sm:h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1 sm:mb-2" />
+                  <div className="h-2 sm:h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-2/3" />
                 </div>
               </div>
             ))}
@@ -591,7 +598,7 @@ const Categories = () => {
 
         {/* Products Grid */}
         {!loading && (
-          <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+          <div className="mt-4 grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1.5 sm:gap-6">
             {filteredProducts?.map((product) => (
             <div 
               key={product.id}
@@ -603,55 +610,55 @@ const Categories = () => {
                 <img 
                   src={product.image_url || product.image} 
                   alt={product.title}
-                  className="w-full h-56 object-contain bg-slate-900/20 dark:bg-slate-700/30"
+                  className="w-full h-32 sm:h-56 object-contain bg-slate-900/20 dark:bg-slate-700/30"
                 />
-                <div className="absolute top-4 left-4 flex gap-2 z-20">
+                <div className="absolute top-2 sm:top-4 left-2 sm:left-4 flex gap-1 sm:gap-2 z-20">
                   {product.discount_percent && product.discount_percent > 0 && (
-                    <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md z-10">
+                    <span className="bg-red-500 text-white text-[8px] sm:text-xs font-bold px-1 sm:px-2 py-0.5 sm:py-1 rounded-md z-10">
                       {product.discount_percent}% OFF
                     </span>
                   )}
-                  <span className="bg-emerald-100/80 backdrop-blur-sm text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold">
+                  <span className="bg-emerald-100/80 backdrop-blur-sm text-emerald-700 px-1.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[8px] sm:text-xs font-semibold">
                     {product.category}
                   </span>
                 </div>
                 {isUserAdmin && (
-                  <div className="absolute top-4 right-4 flex gap-2 z-20">
+                  <div className="absolute top-2 sm:top-4 right-2 sm:right-4 flex gap-1 sm:gap-2 z-20">
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
                         handleEditProduct(product)
                       }}
-                      className="bg-blue-500/90 hover:bg-blue-600 text-white p-2 rounded-full shadow-md transition-all duration-300 backdrop-blur-sm hover:scale-110"
+                      className="bg-blue-500/90 hover:bg-blue-600 text-white p-1 sm:p-2 rounded-full shadow-md transition-all duration-300 backdrop-blur-sm hover:scale-110"
                       title="Edit product"
                     >
-                      <Edit2 className="h-4 w-4" />
+                      <Edit2 className="h-3 w-3 sm:h-4 sm:w-4" />
                     </button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
                         handleDeleteProduct(product.id)
                       }}
-                      className="bg-red-500/90 hover:bg-red-600 text-white p-2 rounded-full shadow-md transition-all duration-300 backdrop-blur-sm hover:scale-110"
+                      className="bg-red-500/90 hover:bg-red-600 text-white p-1 sm:p-2 rounded-full shadow-md transition-all duration-300 backdrop-blur-sm hover:scale-110"
                       title="Delete product"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                     </button>
                   </div>
                 )}
               </div>
               
-              <div className="p-2 sm:p-5 dark:bg-slate-800">
-                <h3 className="text-xs sm:text-lg font-bold text-slate-900 dark:text-slate-100 mb-2 line-clamp-2">
+              <div className="p-1 sm:p-5 dark:bg-slate-800">
+                <h3 className="text-[10px] sm:text-lg font-bold text-slate-900 dark:text-slate-100 mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-2">
                   {product.title}
                 </h3>
                 
-                <p className="text-[10px] sm:text-sm text-slate-600 dark:text-slate-300 mb-2 sm:mb-3 line-clamp-2">
+                <p className="text-[8px] sm:text-sm text-slate-600 dark:text-slate-300 mb-1 sm:mb-3 line-clamp-1 sm:line-clamp-2">
                   {product.description}
                 </p>
                 
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600">
+                <div className="flex items-center justify-between mb-2 sm:mb-4">
+                  <span className="text-sm sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600">
                     {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(product.price)}
                   </span>
                 </div>
@@ -661,10 +668,10 @@ const Categories = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
-                  className={`w-full text-white py-1.5 sm:py-3 px-2 sm:px-4 rounded-2xl text-[10px] sm:text-sm font-semibold flex items-center justify-center transition-all duration-500 ease-out hover:-translate-y-1 hover:scale-105 ${getStoreButtonStyle(product.store).bgClass}`}
+                  className={`w-full text-white py-1 sm:py-3 px-1.5 sm:px-4 rounded-2xl text-[8px] sm:text-sm font-semibold flex items-center justify-center transition-all duration-500 ease-out hover:-translate-y-1 hover:scale-105 ${getStoreButtonStyle(product.store).bgClass}`}
                 >
                   {getStoreButtonStyle(product.store).buttonText}
-                  <ExternalLink className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
+                  <ExternalLink className="ml-0.5 sm:ml-2 h-2 w-2 sm:h-4 sm:w-4" />
                 </a>
               </div>
             </div>

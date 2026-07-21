@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { Calendar, Clock, ArrowLeft, Share2, Tag, Heart, Edit2, Eye } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 import { supabase } from '../supabaseClient'
 import { isAdmin } from '../utils/adminAuth'
 import { useDarkMode } from '../contexts/DarkModeContext'
@@ -231,7 +232,27 @@ const BlogPost = () => {
   const postLang = post.language || 'en';
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-gradient-to-b from-[#1e1b2e] via-[#2d2545] to-[#13111c] text-white' : 'bg-gradient-to-b from-purple-50 to-indigo-100 text-slate-900'}`}>
+    <>
+      <Helmet>
+        <title>{getLocalizedText(post.title, postLang)} | Sallagar Blog</title>
+        <meta name="description" content={getLocalizedText(post.excerpt, postLang) || getLocalizedText(post.content, postLang)?.substring(0, 160)} />
+        <meta name="keywords" content={`${post.category}, ${getLocalizedText(post.title, postLang)}, Sallagar, blog`} />
+        
+        {/* OpenGraph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={getLocalizedText(post.title, postLang)} />
+        <meta property="og:description" content={getLocalizedText(post.excerpt, postLang) || getLocalizedText(post.content, postLang)?.substring(0, 160)} />
+        <meta property="og:image" content={getImageUrl(post)} />
+        <meta property="og:url" content={window.location.href} />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={getLocalizedText(post.title, postLang)} />
+        <meta name="twitter:description" content={getLocalizedText(post.excerpt, postLang) || getLocalizedText(post.content, postLang)?.substring(0, 160)} />
+        <meta name="twitter:image" content={getImageUrl(post)} />
+      </Helmet>
+      
+      <div className={`min-h-screen ${isDarkMode ? 'bg-gradient-to-b from-[#1e1b2e] via-[#2d2545] to-[#13111c] text-white' : 'bg-gradient-to-b from-purple-50 to-indigo-100 text-slate-900'}`}>
       {/* Premium Ambient Light Leaks */}
       {isDarkMode && (
         <>
@@ -429,6 +450,7 @@ const BlogPost = () => {
         )}
       </div>
     </div>
+    </>
   )
 }
 

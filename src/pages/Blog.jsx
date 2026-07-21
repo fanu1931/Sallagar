@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { Calendar, Clock, ArrowRight, Plus, Trash2, X, Loader2, Shield, Edit2, Lock, Search, Eye, Heart } from 'lucide-react'
+import { Calendar, Clock, ArrowRight, Plus, Trash2, X, Loader2, Shield, Edit2, Lock, Search, Eye, Heart, Home } from 'lucide-react'
 import { supabase } from '../supabaseClient'
 import { isAdmin, adminLogout } from '../utils/adminAuth'
 
@@ -658,7 +658,14 @@ const Blog = () => {
         <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 animate-pulse-glow"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-400/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 animate-pulse-glow"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-wide mb-4">Blog</h1>
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-wide">Blog</h1>
+            <Link to="/" className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium">
+              <Home className="h-4 w-4" />
+              <span className="hidden sm:inline">Back to Home</span>
+              <span className="sm:hidden">Home</span>
+            </Link>
+          </div>
           <p className="text-sm text-white/90 max-w-2xl font-light mt-1">
             Good Thoughts, Health, Ayurveda, ani Motivation - आयुष्याचा खरा सल्लागार
           </p>
@@ -789,14 +796,14 @@ const Blog = () => {
 
         {/* Skeleton Loader */}
         {loading && (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-6 mt-4">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="glassmorphism dark:bg-slate-800 rounded-3xl shadow-md overflow-hidden">
-                <div className="h-56 bg-slate-200 dark:bg-slate-700 animate-pulse" />
-                <div className="p-2 sm:p-4 dark:bg-slate-800">
-                  <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-2" />
-                  <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-2" />
-                  <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-2/3" />
+                <div className="h-24 sm:h-56 bg-slate-200 dark:bg-slate-700 animate-pulse" />
+                <div className="p-1 sm:p-4 dark:bg-slate-800">
+                  <div className="h-3 sm:h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1 sm:mb-2" />
+                  <div className="h-2 sm:h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1 sm:mb-2" />
+                  <div className="h-2 sm:h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-2/3" />
                 </div>
               </div>
             ))}
@@ -1289,7 +1296,7 @@ const Blog = () => {
         )}
 
         {!loading && (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-6 mt-4">
             {filteredBlogs?.map((post) => {
               const postLang = post.language || 'en';
               return (
@@ -1299,13 +1306,13 @@ const Blog = () => {
                     <img 
                       src={getImageUrl(post)}
                       alt={getLocalizedText(post.title, postLang)}
-                      className="w-full h-56 object-cover"
+                      className="w-full h-24 sm:h-56 object-contain bg-slate-100 dark:bg-slate-700"
                       onError={(e) => {
                         e.target.src = 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800';
                       }}
                     />
-                    <div className="absolute top-4 left-4 flex gap-2 z-20">
-                      <span className={`px-4 py-2 rounded-full text-xs font-semibold backdrop-blur-sm ${
+                    <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex gap-1 sm:gap-2 z-20">
+                      <span className={`px-1.5 py-0.5 sm:px-4 sm:py-2 rounded-full text-[8px] sm:text-xs font-semibold backdrop-blur-sm ${
                         post.category === 'Good Thoughts' ? 'bg-purple-100/80 text-purple-700' :
                         post.category === 'Fitness' ? 'bg-blue-100/80 text-blue-700' :
                         post.category === 'Health & Ayurveda' ? 'bg-emerald-100/80 text-emerald-700' :
@@ -1314,7 +1321,7 @@ const Blog = () => {
                       }`}>
                         {post.category}
                       </span>
-                      <span className={`px-3 py-2 rounded-full text-xs font-semibold backdrop-blur-sm ${
+                      <span className={`px-1.5 py-0.5 sm:px-3 sm:py-2 rounded-full text-[8px] sm:text-xs font-semibold backdrop-blur-sm ${
                         postLang === 'en' ? 'bg-blue-100/80 text-blue-700' :
                         postLang === 'mr' ? 'bg-purple-100/80 text-purple-700' :
                         'bg-orange-100/80 text-orange-700'
@@ -1323,51 +1330,51 @@ const Blog = () => {
                       </span>
                     </div>
                     {isUserAdmin && (
-                      <div className="absolute top-4 right-4 flex gap-2 z-20">
+                      <div className="absolute top-2 right-2 sm:top-4 sm:right-4 flex gap-1 sm:gap-2 z-20">
                         <button
                           onClick={() => handleEditPost(post)}
-                          className="bg-blue-500/90 hover:bg-blue-600 text-white p-2 rounded-full shadow-md transition-all duration-300 backdrop-blur-sm hover:scale-110"
+                          className="bg-blue-500/90 hover:bg-blue-600 text-white p-1 sm:p-2 rounded-full shadow-md transition-all duration-300 backdrop-blur-sm hover:scale-110"
                           title="Edit blog post"
                         >
-                          <Edit2 className="h-4 w-4" />
+                          <Edit2 className="h-3 w-3 sm:h-4 sm:w-4" />
                         </button>
                         <button
                           onClick={() => handleDeletePost(post.id)}
-                          className="bg-red-500/90 hover:bg-red-600 text-white p-2 rounded-full shadow-md transition-all duration-300 backdrop-blur-sm hover:scale-110"
+                          className="bg-red-500/90 hover:bg-red-600 text-white p-1 sm:p-2 rounded-full shadow-md transition-all duration-300 backdrop-blur-sm hover:scale-110"
                           title="Delete blog post"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                         </button>
                       </div>
                     )}
                   </div>
                   
-                  <div className="p-2 sm:p-4 dark:bg-slate-800">
-                    <div className="flex items-center text-[10px] sm:text-sm text-slate-500 dark:text-slate-400 mb-2">
-                      <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                      <span className="mr-2 sm:mr-4">{post.date}</span>
-                      <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  <div className="p-1 sm:p-4 dark:bg-slate-800">
+                    <div className="flex items-center text-[8px] sm:text-sm text-slate-500 dark:text-slate-400 mb-1 sm:mb-2">
+                      <Calendar className="h-2 w-2 sm:h-4 sm:w-4 mr-1" />
+                      <span className="mr-1 sm:mr-4 hidden sm:inline">{post.date}</span>
+                      <Clock className="h-2 w-2 sm:h-4 sm:w-4 mr-1" />
                       <span>{post.read_time || post.readTime}</span>
                     </div>
                     
-                    <h2 className="text-xs sm:text-base font-bold text-slate-900 dark:text-slate-100 mb-2 sm:mb-3 line-clamp-2 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                    <h2 className="text-[10px] sm:text-base font-bold text-slate-900 dark:text-slate-100 mb-1 sm:mb-3 line-clamp-1 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                       <Link to={`/blog/${post.id}`}>
                         {getLocalizedText(post.title, postLang)}
                       </Link>
                     </h2>
                     
-                    <p className="text-[10px] sm:text-sm text-slate-600 dark:text-slate-300 mb-2 sm:mb-4 line-clamp-2 sm:line-clamp-3">
+                    <p className="text-[8px] sm:text-sm text-slate-600 dark:text-slate-300 mb-1 sm:mb-4 line-clamp-1 sm:line-clamp-3">
                       {getLocalizedText(post.excerpt, postLang)}
                     </p>
                     
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+                    <div className="flex items-center justify-between mb-2 sm:mb-4">
+                      <div className="flex items-center gap-2 sm:gap-4 text-[8px] sm:text-sm text-slate-500 dark:text-slate-400">
                         <div className="flex items-center">
-                          <Eye className="h-4 w-4 mr-1" />
+                          <Eye className="h-2 w-2 sm:h-4 sm:w-4 mr-1" />
                           <span>{post.views || 0}</span>
                         </div>
                         <div className="flex items-center">
-                          <Heart className="h-4 w-4 mr-1" />
+                          <Heart className="h-2 w-2 sm:h-4 sm:w-4 mr-1" />
                           <span>{post.likes || 0}</span>
                         </div>
                       </div>
@@ -1375,10 +1382,10 @@ const Blog = () => {
                     
                     <Link 
                       to={`/blog/${post.id}`}
-                      className="inline-flex items-center text-[10px] sm:text-sm text-emerald-600 dark:text-emerald-400 font-semibold hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors hover:translate-x-1"
+                      className="inline-flex items-center text-[8px] sm:text-sm text-emerald-600 dark:text-emerald-400 font-semibold hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors hover:translate-x-1"
                     >
                       Read More
-                      <ArrowRight className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
+                      <ArrowRight className="ml-1 sm:ml-2 h-2 w-2 sm:h-4 sm:w-4" />
                     </Link>
                   </div>
                 </article>

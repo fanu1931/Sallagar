@@ -14,6 +14,7 @@ const Header = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [clickCount, setClickCount] = useState(0)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isAdmin, setIsAdmin] = useState(() => {
     const token = localStorage.getItem('is_admin');
     // Strict check: only true if token is exactly the string 'true'
@@ -186,12 +187,58 @@ const Header = () => {
             >
               <Lock className="h-5 w-5" />
             </button>
-            <button className="md:hidden p-2.5 text-white hover:text-purple-300 hover:bg-white/10 rounded-full transition-all duration-200 hover:scale-110 shadow-sm hover:shadow-white/20">
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2.5 text-white hover:text-purple-300 hover:bg-white/10 rounded-full transition-all duration-200 hover:scale-110 shadow-sm hover:shadow-white/20"
+            >
               <Menu className="h-6 w-6" />
             </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-[#1e1b2e]/95 backdrop-blur-xl border-b border-purple-500/20">
+          <div className="px-4 py-4 space-y-2">
+            <Link 
+              to="/" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-white hover:text-purple-300 px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200"
+            >
+              Home
+            </Link>
+            <Link 
+              to="/blog" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-white hover:text-purple-300 px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200"
+            >
+              Blog
+            </Link>
+            <Link 
+              to="/categories" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-white hover:text-purple-300 px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200"
+            >
+              Product Sell
+            </Link>
+            <Link 
+              to="/about" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-white hover:text-purple-300 px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200"
+            >
+              About
+            </Link>
+            <Link 
+              to="/contact" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-white hover:text-purple-300 px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200"
+            >
+              Contact
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Password Modal */}
       {isModalOpen && (
