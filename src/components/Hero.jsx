@@ -195,26 +195,26 @@ const Hero = () => {
             </div>
 
             {/* Trust Indicators */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
-              <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl p-4 shadow-xl">
-                <div className="flex items-center justify-center mb-2">
-                  <Star className="h-5 w-5 text-purple-300 fill-current" />
-                  <Star className="h-5 w-5 text-purple-300 fill-current" />
-                  <Star className="h-5 w-5 text-purple-300 fill-current" />
-                  <Star className="h-5 w-5 text-purple-300 fill-current" />
-                  <Star className="h-5 w-5 text-purple-300 fill-current" />
+            <div className="grid grid-cols-3 gap-1.5 max-w-4xl mx-auto">
+              <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl p-1.5 shadow-xl">
+                <div className="flex items-center justify-center mb-1">
+                  <Star className="h-3 w-3 text-purple-300 fill-current" />
+                  <Star className="h-3 w-3 text-purple-300 fill-current" />
+                  <Star className="h-3 w-3 text-purple-300 fill-current" />
+                  <Star className="h-3 w-3 text-purple-300 fill-current" />
+                  <Star className="h-3 w-3 text-purple-300 fill-current" />
                 </div>
-                <p className="text-sm font-medium text-white">500+ Inspiring Articles</p>
+                <p className="text-[10px] font-medium text-white text-center">500+ Inspiring Articles</p>
               </div>
 
-              <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl p-4 shadow-xl">
-                <CheckCircle className="h-8 w-8 text-purple-300 mb-2 mx-auto" />
-                <p className="text-sm font-medium text-white">100% Authentic Content</p>
+              <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl p-1.5 shadow-xl">
+                <CheckCircle className="h-4 w-4 text-purple-300 mb-1 mx-auto" />
+                <p className="text-[10px] font-medium text-white text-center">100% Authentic Content</p>
               </div>
 
-              <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl p-4 shadow-xl">
-                <Shield className="h-8 w-8 text-purple-300 mb-2 mx-auto" />
-                <p className="text-sm font-medium text-white">Expert Wellness Team</p>
+              <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl p-1.5 shadow-xl">
+                <Shield className="h-4 w-4 text-purple-300 mb-1 mx-auto" />
+                <p className="text-[10px] font-medium text-white text-center">Expert Wellness Team</p>
               </div>
             </div>
 
