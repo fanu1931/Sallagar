@@ -1138,12 +1138,12 @@ const Blog = () => {
                     
                     <h2 className="text-[10px] sm:text-base font-bold text-slate-900 dark:text-slate-100 mb-1 sm:mb-3 line-clamp-1 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                       <Link to={`/blog/${post.id}`}>
-                        {getLocalizedText(post.title, postLang)}
+                        {getLocalizedText(post.title, 'hi')}
                       </Link>
                     </h2>
                     
                     <p className="text-[8px] sm:text-sm text-slate-600 dark:text-slate-300 mb-1 sm:mb-4 line-clamp-1 sm:line-clamp-3">
-                      {getLocalizedText(post.excerpt, postLang)}
+                      {getLocalizedText(post.excerpt, 'hi')}
                     </p>
                     
                     <div className="flex items-center justify-between mb-2 sm:mb-4">
@@ -1168,8 +1168,7 @@ const Blog = () => {
                     </Link>
                   </div>
                 </article>
-              );
-            })}
+            ))}
         </div>
         )}
 
