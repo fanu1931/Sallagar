@@ -11,7 +11,7 @@ const Blog = () => {
   const location = useLocation()
   const [showAdminForm, setShowAdminForm] = useState(false)
   const [posts, setPosts] = useState([])
-  const [filterLang, setFilterLang] = useState('all')
+  const [filterLang, setFilterLang] = useState('hi')
   const [loading, setLoading] = useState(true)
   const [isUserAdmin, setIsUserAdmin] = useState(() => {
     const token = localStorage.getItem('is_admin');
@@ -20,7 +20,7 @@ const Blog = () => {
     return token === 'true';
   })
   const [editingPost, setEditingPost] = useState(null)
-  const [activeCategory, setActiveCategory] = useState('All')
+  const [activeCategory, setActiveCategory] = useState('Health & Ayurveda')
   const [searchQuery, setSearchQuery] = useState('')
   const [showPasswordForm, setShowPasswordForm] = useState(false)
   const [passwordData, setPasswordData] = useState({
@@ -33,10 +33,7 @@ const Blog = () => {
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false)
 
   const categoryOptions = [
-    'Good Thoughts',
-    'Fitness',
-    'Health & Ayurveda',
-    'Motivation'
+    'Health & Ayurveda'
   ]
 
   // Helper function to safely extract language-specific value
@@ -149,10 +146,10 @@ const Blog = () => {
 
   // Filter posts based on category and search query
   const filteredBlogs = posts.filter(blog => {
-    const matchesCategory = activeCategory === 'All' || blog.category === activeCategory;
-    const matchesLanguage = filterLang === 'all' || blog.language === filterLang;
-    const titleText = (blog.title?.en || blog.title?.mr || blog.title?.hi || "").toLowerCase();
-    const contentText = (blog.content?.en || blog.content?.mr || blog.content?.hi || "").toLowerCase();
+    const matchesCategory = blog.category === 'Health & Ayurveda';
+    const matchesLanguage = blog.language === 'hi';
+    const titleText = (blog.title?.hi || "").toLowerCase();
+    const contentText = (blog.content?.hi || "").toLowerCase();
     const matchesSearch = titleText.includes(searchQuery.toLowerCase()) || contentText.includes(searchQuery.toLowerCase());
     return matchesCategory && matchesLanguage && matchesSearch;
   });
@@ -255,9 +252,9 @@ const Blog = () => {
       contentMr: content.mr || '',
       contentHi: content.hi || '',
       image: post.image_url || post.image || '',
-      category: post.category || 'Good Thoughts',
+      category: post.category || 'Health & Ayurveda',
       readTime: post.read_time || post.readTime || '',
-      language: post.language || 'en',
+      language: post.language || 'hi',
       hasAffiliate: post.has_affiliate || false,
       recommendedProducts: (post.recommended_products || []).map(p => ({
         name: p.name || '',
@@ -283,9 +280,9 @@ const Blog = () => {
     contentMr: '',
     contentHi: '',
     image: '',
-    category: 'Good Thoughts',
+    category: 'Health & Ayurveda',
     readTime: '',
-    language: 'en',
+    language: 'hi',
     hasAffiliate: false,
     recommendedProducts: [
       { name: '', image: '', link: '' },
@@ -519,9 +516,9 @@ const Blog = () => {
           contentMr: '',
           contentHi: '',
           image: '',
-          category: 'Good Thoughts',
+          category: 'Health & Ayurveda',
           readTime: '',
-          language: 'en',
+          language: 'hi',
           hasAffiliate: false,
           recommendedProducts: [
             { name: '', image: '', link: '' },
@@ -667,46 +664,16 @@ const Blog = () => {
             </Link>
           </div>
           <p className="text-sm text-white/90 max-w-2xl font-light mt-1">
-            Good Thoughts, Health, Ayurveda, ani Motivation - आयुष्याचा खरा सल्लागार
+            Health & Ayurveda - आयुष्याचा खरा सल्लागार
           </p>
         </div>
       </div>
 
       {/* Blog Posts Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Language Filter Tabs */}
+        {/* Language Filter Tabs - Hindi Only */}
         <div className="mb-3 flex justify-center">
           <div className="bg-slate-900/10 dark:bg-slate-700/30 backdrop-blur-sm border border-slate-300 dark:border-slate-600 rounded-full p-1 inline-flex gap-2 mx-auto">
-            <button
-              onClick={() => setFilterLang('all')}
-              className={`px-4 py-1.5 rounded-full transition-all duration-200 ${
-                filterLang === 'all' 
-                  ? 'bg-purple-600 text-white font-bold shadow-md shadow-purple-500/30' 
-                  : 'text-slate-700 dark:text-slate-200 hover:text-purple-700 dark:hover:text-purple-400 font-semibold transition-colors duration-200'
-              }`}
-            >
-              All
-            </button>
-            <button
-              onClick={() => setFilterLang('en')}
-              className={`px-4 py-1.5 rounded-full transition-all duration-200 ${
-                filterLang === 'en' 
-                  ? 'bg-purple-600 text-white font-bold shadow-md shadow-purple-500/30' 
-                  : 'text-slate-700 dark:text-slate-200 hover:text-purple-700 dark:hover:text-purple-400 font-semibold transition-colors duration-200'
-              }`}
-            >
-              🇬🇧 English
-            </button>
-            <button
-              onClick={() => setFilterLang('mr')}
-              className={`px-4 py-1.5 rounded-full transition-all duration-200 ${
-                filterLang === 'mr' 
-                  ? 'bg-purple-600 text-white font-bold shadow-md shadow-purple-500/30' 
-                  : 'text-slate-700 dark:text-slate-200 hover:text-purple-700 dark:hover:text-purple-400 font-semibold transition-colors duration-200'
-              }`}
-            >
-              🇮🇳 मराठी
-            </button>
             <button
               onClick={() => setFilterLang('hi')}
               className={`px-4 py-1.5 rounded-full transition-all duration-200 ${
@@ -736,40 +703,10 @@ const Blog = () => {
           </div>
         </div>
 
-        {/* Category Filter Buttons */}
+        {/* Category Filter - Health & Ayurveda Only */}
         <div className="mb-4">
           <div className="glassmorphism rounded-3xl shadow-lg p-4 dark:bg-slate-800/50 dark:border-slate-700">
             <div className="flex flex-wrap gap-2 justify-center">
-              <button
-                onClick={() => setActiveCategory('All')}
-                className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all duration-200 ${
-                  activeCategory === 'All'
-                    ? 'bg-purple-600 text-white font-bold shadow-md shadow-purple-500/30'
-                    : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'
-                }`}
-              >
-                All Blogs
-              </button>
-              <button
-                onClick={() => setActiveCategory('Good Thoughts')}
-                className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all duration-200 ${
-                  activeCategory === 'Good Thoughts'
-                    ? 'bg-purple-600 text-white font-bold shadow-md shadow-purple-500/30'
-                    : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'
-                }`}
-              >
-                Good Thoughts
-              </button>
-              <button
-                onClick={() => setActiveCategory('Fitness')}
-                className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all duration-200 ${
-                  activeCategory === 'Fitness'
-                    ? 'bg-purple-600 text-white font-bold shadow-md shadow-purple-500/30'
-                    : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'
-                }`}
-              >
-                Fitness
-              </button>
               <button
                 onClick={() => setActiveCategory('Health & Ayurveda')}
                 className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all duration-200 ${
@@ -779,16 +716,6 @@ const Blog = () => {
                 }`}
               >
                 Health & Ayurveda
-              </button>
-              <button
-                onClick={() => setActiveCategory('Motivation')}
-                className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all duration-200 ${
-                  activeCategory === 'Motivation'
-                    ? 'bg-purple-600 text-white font-bold shadow-md shadow-purple-500/30'
-                    : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'
-                }`}
-              >
-                Motivation
               </button>
             </div>
           </div>
@@ -859,8 +786,6 @@ const Blog = () => {
                     onChange={(e) => setNewPost({...newPost, language: e.target.value})}
                     className="w-full px-4 py-3 border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all duration-300 text-slate-900 dark:text-slate-100"
                   >
-                    <option value="en">🇬🇧 English</option>
-                    <option value="mr">🇮🇳 मराठी (Marathi)</option>
                     <option value="hi">🇮🇳 हिंदी (Hindi)</option>
                   </select>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">Select the primary language for this blog post</p>
