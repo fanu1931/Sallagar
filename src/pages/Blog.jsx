@@ -11,7 +11,6 @@ const Blog = () => {
   const location = useLocation()
   const [showAdminForm, setShowAdminForm] = useState(false)
   const [posts, setPosts] = useState([])
-  const [filterLang, setFilterLang] = useState('hi')
   const [loading, setLoading] = useState(true)
   const [isUserAdmin, setIsUserAdmin] = useState(() => {
     const token = localStorage.getItem('is_admin');
@@ -147,11 +146,10 @@ const Blog = () => {
   // Filter posts based on category and search query
   const filteredBlogs = posts.filter(blog => {
     const matchesCategory = blog.category === 'Health & Ayurveda';
-    const matchesLanguage = blog.language === 'hi';
     const titleText = (blog.title?.hi || "").toLowerCase();
     const contentText = (blog.content?.hi || "").toLowerCase();
     const matchesSearch = titleText.includes(searchQuery.toLowerCase()) || contentText.includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesLanguage && matchesSearch;
+    return matchesCategory && matchesSearch;
   });
 
   // Fetch posts from Supabase on mount with caching
@@ -242,19 +240,12 @@ const Blog = () => {
     const content = typeof post.content === 'string' ? JSON.parse(post.content) : post.content
     
     setNewPost({
-      titleEn: title.en || '',
-      titleMr: title.mr || '',
-      titleHi: title.hi || '',
-      excerptEn: excerpt.en || '',
-      excerptMr: excerpt.mr || '',
-      excerptHi: excerpt.hi || '',
-      contentEn: content.en || '',
-      contentMr: content.mr || '',
-      contentHi: content.hi || '',
+      title: title.hi || '',
+      excerpt: excerpt.hi || '',
+      content: content.hi || '',
       image: post.image_url || post.image || '',
       category: post.category || 'Health & Ayurveda',
       readTime: post.read_time || post.readTime || '',
-      language: post.language || 'hi',
       hasAffiliate: post.has_affiliate || false,
       recommendedProducts: (post.recommended_products || []).map(p => ({
         name: p.name || '',
@@ -268,21 +259,14 @@ const Blog = () => {
     })
   }
 
-  // Form state for new blog post with manual multi-language inputs
+  // Form state for new blog post - Hindi only
   const [newPost, setNewPost] = useState({
-    titleEn: '',
-    titleMr: '',
-    titleHi: '',
-    excerptEn: '',
-    excerptMr: '',
-    excerptHi: '',
-    contentEn: '',
-    contentMr: '',
-    contentHi: '',
+    title: '',
+    excerpt: '',
+    content: '',
     image: '',
     category: 'Health & Ayurveda',
     readTime: '',
-    language: 'hi',
     hasAffiliate: false,
     recommendedProducts: [
       { name: '', image: '', link: '' },
@@ -435,7 +419,7 @@ const Blog = () => {
 
     try {
       // Map manual inputs directly to database structure
-      const { titleEn, titleMr, titleHi, excerptEn, excerptMr, excerptHi, contentEn, contentMr, contentHi, image, category, readTime, language, hasAffiliate, recommendedProducts } = newPost
+      const { title, excerpt, content, image, category, readTime, hasAffiliate, recommendedProducts } = newPost
       
       // Filter out empty products and map to correct field names
       const validProducts = recommendedProducts
@@ -447,13 +431,13 @@ const Blog = () => {
         }))
       
       const payload = {
-        title: { en: titleEn, mr: titleMr, hi: titleHi },
-        excerpt: { en: excerptEn, mr: excerptMr, hi: excerptHi },
-        content: { en: contentEn, mr: contentMr, hi: contentHi },
+        title: { hi: title },
+        excerpt: { hi: excerpt },
+        content: { hi: content },
         image_url: image, // Use the image URL directly (already from Supabase Storage or converted URL)
         category: category,
         read_time: readTime,
-        language: language,
+        language: 'hi',
         has_affiliate: hasAffiliate,
         recommended_products: validProducts
       }
@@ -506,19 +490,12 @@ const Blog = () => {
 
         // Reset form
         setNewPost({
-          titleEn: '',
-          titleMr: '',
-          titleHi: '',
-          excerptEn: '',
-          excerptMr: '',
-          excerptHi: '',
-          contentEn: '',
-          contentMr: '',
-          contentHi: '',
+          title: '',
+          excerpt: '',
+          content: '',
           image: '',
           category: 'Health & Ayurveda',
           readTime: '',
-          language: 'hi',
           hasAffiliate: false,
           recommendedProducts: [
             { name: '', image: '', link: '' },
@@ -671,22 +648,6 @@ const Blog = () => {
 
       {/* Blog Posts Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Language Filter Tabs - Hindi Only */}
-        <div className="mb-3 flex justify-center">
-          <div className="bg-slate-900/10 dark:bg-slate-700/30 backdrop-blur-sm border border-slate-300 dark:border-slate-600 rounded-full p-1 inline-flex gap-2 mx-auto">
-            <button
-              onClick={() => setFilterLang('hi')}
-              className={`px-4 py-1.5 rounded-full transition-all duration-200 ${
-                filterLang === 'hi' 
-                  ? 'bg-purple-600 text-white font-bold shadow-md shadow-purple-500/30' 
-                  : 'text-slate-700 dark:text-slate-200 hover:text-purple-700 dark:hover:text-purple-400 font-semibold transition-colors duration-200'
-              }`}
-            >
-              🇮🇳 हिंदी
-            </button>
-          </div>
-        </div>
-
         {/* Search Bar */}
         <div className="mb-3">
           <div className="glassmorphism rounded-3xl shadow-lg p-4">
@@ -777,117 +738,19 @@ const Blog = () => {
             </h2>
             <form onSubmit={handleAddPost} className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* Language Selector */}
-                <div className="md:col-span-2">
-                  <label className="block text-lg font-bold text-slate-800 dark:text-slate-200 mb-3">Primary Language</label>
-                  <select
-                    required
-                    value={newPost.language}
-                    onChange={(e) => setNewPost({...newPost, language: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all duration-300 text-slate-900 dark:text-slate-100"
-                  >
-                    <option value="hi">🇮🇳 हिंदी (Hindi)</option>
-                  </select>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">Select the primary language for this blog post</p>
-                </div>
-
-                {/* ENGLISH SECTION */}
+                {/* HINDI SECTION ONLY */}
                 <div className="md:col-span-2">
                   <label className="flex text-lg font-bold text-slate-800 dark:text-slate-200 mb-3 items-center gap-2">
-                    <span className="text-2xl">🇬🇧</span> English Section
-                  </label>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Title (English)</label>
-                      <input
-                        type="text"
-                        required={newPost.language === 'en'}
-                        value={newPost.titleEn}
-                        onChange={(e) => setNewPost({...newPost, titleEn: e.target.value})}
-                        className="w-full px-4 py-3 border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all duration-300 text-slate-900 dark:text-slate-100"
-                        placeholder="Blog title in English"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Excerpt (English)</label>
-                      <textarea
-                        required={newPost.language === 'en'}
-                        value={newPost.excerptEn}
-                        onChange={(e) => setNewPost({...newPost, excerptEn: e.target.value})}
-                        rows="3"
-                        className="w-full px-4 py-3 border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all duration-300 text-slate-900 dark:text-slate-100"
-                        placeholder="Short description in English"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Content (English)</label>
-                      <textarea
-                        required={newPost.language === 'en'}
-                        value={newPost.contentEn}
-                        onChange={(e) => setNewPost({...newPost, contentEn: e.target.value})}
-                        rows="6"
-                        className="w-full px-4 py-3 border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all duration-300 text-slate-900 dark:text-slate-100"
-                        placeholder="Full blog content in English"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* MARATHI SECTION */}
-                <div className="md:col-span-2">
-                  <label className="flex text-lg font-bold text-slate-800 dark:text-slate-200 mb-3 items-center gap-2">
-                    <span className="text-2xl">🇮🇳</span> मराठी विभाग (Marathi Section)
-                  </label>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">शीर्षक (मराठी)</label>
-                      <input
-                        type="text"
-                        required={newPost.language === 'mr'}
-                        value={newPost.titleMr}
-                        onChange={(e) => setNewPost({...newPost, titleMr: e.target.value})}
-                        className="w-full px-4 py-3 border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all duration-300 text-slate-900 dark:text-slate-100"
-                        placeholder="ब्लॉग शीर्षक मराठीत"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">थोडक्यात वर्णन (मराठी)</label>
-                      <textarea
-                        required={newPost.language === 'mr'}
-                        value={newPost.excerptMr}
-                        onChange={(e) => setNewPost({...newPost, excerptMr: e.target.value})}
-                        rows="3"
-                        className="w-full px-4 py-3 border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all duration-300 text-slate-900 dark:text-slate-100"
-                        placeholder="थोडक्यात वर्णन मराठीत"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">सामग्री (मराठी)</label>
-                      <textarea
-                        required={newPost.language === 'mr'}
-                        value={newPost.contentMr}
-                        onChange={(e) => setNewPost({...newPost, contentMr: e.target.value})}
-                        rows="6"
-                        className="w-full px-4 py-3 border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all duration-300 text-slate-900 dark:text-slate-100"
-                        placeholder="पूर्ण ब्लॉग सामग्री मराठीत"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* HINDI SECTION */}
-                <div className="md:col-span-2">
-                  <label className="flex text-lg font-bold text-slate-800 dark:text-slate-200 mb-3 items-center gap-2">
-                    <span className="text-2xl">🇮🇳</span> हिंदी विभाग (Hindi Section)
+                    <span className="text-2xl">🇮🇳</span> हिंदी ब्लॉग (Hindi Blog)
                   </label>
                   <div className="space-y-4">
                     <div>
                       <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">शीर्षक (हिंदी)</label>
                       <input
                         type="text"
-                        required={newPost.language === 'hi'}
-                        value={newPost.titleHi}
-                        onChange={(e) => setNewPost({...newPost, titleHi: e.target.value})}
+                        required
+                        value={newPost.title}
+                        onChange={(e) => setNewPost({...newPost, title: e.target.value})}
                         className="w-full px-4 py-3 border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all duration-300 text-slate-900 dark:text-slate-100"
                         placeholder="ब्लॉग शीर्षक हिंदी में"
                       />
@@ -895,9 +758,9 @@ const Blog = () => {
                     <div>
                       <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">थोड़ा विवरण (हिंदी)</label>
                       <textarea
-                        required={newPost.language === 'hi'}
-                        value={newPost.excerptHi}
-                        onChange={(e) => setNewPost({...newPost, excerptHi: e.target.value})}
+                        required
+                        value={newPost.excerpt}
+                        onChange={(e) => setNewPost({...newPost, excerpt: e.target.value})}
                         rows="3"
                         className="w-full px-4 py-3 border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all duration-300 text-slate-900 dark:text-slate-100"
                         placeholder="थोड़ा विवरण हिंदी में"
@@ -906,12 +769,12 @@ const Blog = () => {
                     <div>
                       <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">सामग्री (हिंदी)</label>
                       <textarea
-                        required={newPost.language === 'hi'}
-                        value={newPost.contentHi}
-                        onChange={(e) => setNewPost({...newPost, contentHi: e.target.value})}
-                        rows="6"
+                        required
+                        value={newPost.content}
+                        onChange={(e) => setNewPost({...newPost, content: e.target.value})}
+                        rows="20"
                         className="w-full px-4 py-3 border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all duration-300 text-slate-900 dark:text-slate-100"
-                        placeholder="पूर्ण ब्लॉग सामग्री हिंदी में"
+                        placeholder="पूर्ण ब्लॉग सामग्री हिंदी में (1500+ शब्द तक)"
                       />
                     </div>
                   </div>
@@ -1222,20 +1085,18 @@ const Blog = () => {
 
         {!loading && (
           <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-6 mt-4">
-            {filteredBlogs?.map((post) => {
-              const postLang = post.language || 'en';
-              return (
-                <article key={post.id} className="glassmorphism dark:bg-slate-800 rounded-3xl shadow-md overflow-hidden hover:shadow-2xl hover:shadow-emerald-200/50 transition-all duration-500 ease-out hover:-translate-y-3 hover:scale-[1.02]">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-10"></div>
-                    <img 
-                      src={getImageUrl(post)}
-                      alt={getLocalizedText(post.title, postLang)}
-                      className="w-full h-24 sm:h-56 object-contain bg-slate-100 dark:bg-slate-700"
-                      onError={(e) => {
-                        e.target.src = 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800';
-                      }}
-                    />
+            {filteredBlogs?.map((post) => (
+              <article key={post.id} className="glassmorphism dark:bg-slate-800 rounded-3xl shadow-md overflow-hidden hover:shadow-2xl hover:shadow-emerald-200/50 transition-all duration-500 ease-out hover:-translate-y-3 hover:scale-[1.02]">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-10"></div>
+                  <img 
+                    src={getImageUrl(post)}
+                    alt={getLocalizedText(post.title, 'hi')}
+                    className="w-full h-24 sm:h-56 object-contain bg-slate-100 dark:bg-slate-700"
+                    onError={(e) => {
+                      e.target.src = 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800';
+                    }}
+                  />
                     <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex gap-1 sm:gap-2 z-20">
                       <span className={`px-1.5 py-0.5 sm:px-4 sm:py-2 rounded-full text-[8px] sm:text-xs font-semibold backdrop-blur-sm ${
                         post.category === 'Good Thoughts' ? 'bg-purple-100/80 text-purple-700' :
@@ -1245,13 +1106,6 @@ const Blog = () => {
                         'bg-slate-100/80 text-slate-700'
                       }`}>
                         {post.category}
-                      </span>
-                      <span className={`px-1.5 py-0.5 sm:px-3 sm:py-2 rounded-full text-[8px] sm:text-xs font-semibold backdrop-blur-sm ${
-                        postLang === 'en' ? 'bg-blue-100/80 text-blue-700' :
-                        postLang === 'mr' ? 'bg-purple-100/80 text-purple-700' :
-                        'bg-orange-100/80 text-orange-700'
-                      }`}>
-                        {postLang === 'en' ? '🇬🇧 EN' : postLang === 'mr' ? '🇮🇳 मराठी' : '🇮🇳 हिंदी'}
                       </span>
                     </div>
                     {isUserAdmin && (
