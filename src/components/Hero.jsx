@@ -204,6 +204,70 @@ const Hero = () => {
               <ChevronDown className="h-5 w-5 text-purple-300"/>
             </div>
 
+            {/* Featured Jobs Slider */}
+            <div className="mt-6 max-w-7xl mx-auto pb-4 text-left">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold text-white">Featured Jobs</h2>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setJobIndex((prev) => (prev - 3 < 0 ? Math.max(0, (jobs || []).length - 3) : prev - 3))}
+                    disabled={!jobs || jobs.length <= 3}
+                    className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition disabled:opacity-50"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </button>
+                  <button
+                    onClick={() => setJobIndex((prev) => (prev + 3 >= (jobs || []).length ? 0 : prev + 3))}
+                    disabled={!jobs || jobs.length <= 3}
+                    className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition disabled:opacity-50"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </button>
+                </div>
+              </div>
+
+              {loading ? (
+                <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-6 w-full">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden w-full">
+                      <div className="h-24 sm:h-48 bg-slate-200 dark:bg-slate-700 animate-pulse" />
+                      <div className="p-1.5 sm:p-5">
+                        <div className="h-3 sm:h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1 sm:mb-2" />
+                        <div className="h-2 sm:h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1 sm:mb-2" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : !Array.isArray(jobs) || jobs.length === 0 ? (
+                <div className="text-center text-slate-400 py-8">No jobs found</div>
+              ) : (
+                <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-6 w-full">
+                  {(jobs || []).slice(jobIndex, jobIndex + 3).map((job) => (
+                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-full">
+                      <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full">
+                        {job.banner_url || job.banner ? (
+                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full h-24 sm:h-48 object-cover object-center" />
+                        ) : (
+                          <div className="h-24 sm:h-40 bg-purple-900/40 flex items-center justify-center">
+                            <span className="text-2xl sm:text-4xl">�</span>
+                          </div>
+                        )}
+                        <div className="p-1.5 sm:p-5">
+                          <span className="text-[8px] sm:text-xs font-semibold px-1.5 sm:px-3 py-0.5 sm:py-1 bg-purple-500/20 text-purple-300 rounded-full">{job.job_type || job.jobType || 'Full-Time'}</span>
+                          <h3 className="text-[10px] sm:text-lg font-bold text-white mt-1 sm:mt-2 mb-1 sm:mb-2 line-clamp-1">{job.title}</h3>
+                          <p className="text-[8px] sm:text-sm text-slate-300 mb-1 sm:mb-3 line-clamp-1 sm:line-clamp-2">{job.location} • {job.salary}</p>
+                          <div className="flex items-center justify-between text-[8px] sm:text-xs text-slate-400">
+                            <span className="hidden sm:inline">{job.created_at ? new Date(job.created_at).toLocaleDateString() : ''}</span>
+                            <span className="font-semibold text-purple-400 flex items-center text-[8px] sm:text-xs">Apply →</span>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Featured Products Slider */}
             <div className="mt-6 max-w-7xl mx-auto text-left">
               <div className="flex items-center justify-between mb-4">
@@ -262,70 +326,6 @@ const Hero = () => {
                         <p className="text-purple-300 text-[10px] sm:text-lg font-black mb-1 sm:mb-3">₹{product.price}</p>
                         <div className="bg-gradient-to-r from-purple-400 to-indigo-500 text-white font-extrabold text-[8px] sm:text-xs py-1 sm:py-2 px-1.5 sm:px-3 rounded-xl shadow-lg hover:brightness-110 flex items-center justify-center gap-0.5 sm:gap-1 w-full transition">
                           Buy Now 🛒
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Featured Jobs Slider */}
-            <div className="mt-6 max-w-7xl mx-auto pb-4 text-left">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold text-white">Featured Jobs</h2>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setJobIndex((prev) => (prev - 3 < 0 ? Math.max(0, (jobs || []).length - 3) : prev - 3))}
-                    disabled={!jobs || jobs.length <= 3}
-                    className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition disabled:opacity-50"
-                  >
-                    <ChevronLeft className="h-6 w-6" />
-                  </button>
-                  <button
-                    onClick={() => setJobIndex((prev) => (prev + 3 >= (jobs || []).length ? 0 : prev + 3))}
-                    disabled={!jobs || jobs.length <= 3}
-                    className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition disabled:opacity-50"
-                  >
-                    <ChevronRight className="h-6 w-6" />
-                  </button>
-                </div>
-              </div>
-
-              {loading ? (
-                <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-6 w-full">
-                  {[...Array(4)].map((_, i) => (
-                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden w-full">
-                      <div className="h-24 sm:h-48 bg-slate-200 dark:bg-slate-700 animate-pulse" />
-                      <div className="p-1.5 sm:p-5">
-                        <div className="h-3 sm:h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1 sm:mb-2" />
-                        <div className="h-2 sm:h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1 sm:mb-2" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : !Array.isArray(jobs) || jobs.length === 0 ? (
-                <div className="text-center text-slate-400 py-8">No jobs found</div>
-              ) : (
-                <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-6 w-full">
-                  {(jobs || []).slice(jobIndex, jobIndex + 3).map((job) => (
-                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-full">
-                      <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full">
-                        {job.banner_url || job.banner ? (
-                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full h-24 sm:h-48 object-cover object-center" />
-                        ) : (
-                          <div className="h-24 sm:h-40 bg-purple-900/40 flex items-center justify-center">
-                            <span className="text-2xl sm:text-4xl">�</span>
-                          </div>
-                        )}
-                        <div className="p-1.5 sm:p-5">
-                          <span className="text-[8px] sm:text-xs font-semibold px-1.5 sm:px-3 py-0.5 sm:py-1 bg-purple-500/20 text-purple-300 rounded-full">{job.job_type || job.jobType || 'Full-Time'}</span>
-                          <h3 className="text-[10px] sm:text-lg font-bold text-white mt-1 sm:mt-2 mb-1 sm:mb-2 line-clamp-1">{job.title}</h3>
-                          <p className="text-[8px] sm:text-sm text-slate-300 mb-1 sm:mb-3 line-clamp-1 sm:line-clamp-2">{job.location} • {job.salary}</p>
-                          <div className="flex items-center justify-between text-[8px] sm:text-xs text-slate-400">
-                            <span className="hidden sm:inline">{job.created_at ? new Date(job.created_at).toLocaleDateString() : ''}</span>
-                            <span className="font-semibold text-purple-400 flex items-center text-[8px] sm:text-xs">Apply →</span>
-                          </div>
                         </div>
                       </div>
                     </Link>
