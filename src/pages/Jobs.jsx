@@ -158,7 +158,7 @@ const Jobs = () => {
           <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="bg-white rounded-2xl shadow-md overflow-hidden w-[32vw] min-w-[110px] md:w-full flex-shrink-0 snap-center">
-                <div className="h-16 sm:h-44 bg-gray-100 animate-pulse rounded-t-lg" />
+                <div className="aspect-video h-16 sm:h-44 bg-gray-100 animate-pulse rounded-t-lg" />
                 <div className="p-1.5 sm:p-3">
                   <div className="h-3 bg-slate-200 rounded animate-pulse mb-1" />
                   <div className="h-2 bg-slate-200 rounded animate-pulse w-2/3" />
@@ -243,8 +243,8 @@ const Jobs = () => {
               <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
                   {filteredJobs.map((job) => (
                     <div key={job.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[32vw] min-w-[110px] md:w-full flex-shrink-0 snap-center">
-                      <div className="relative h-16 sm:h-44 overflow-hidden">
-                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-full object-cover rounded-t-lg" />
+                      <div className="relative aspect-video h-16 sm:h-44 overflow-hidden rounded-t-lg bg-slate-900">
+                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-full object-contain" />
                         <div className="absolute top-2 right-2 z-10 sm:top-3 sm:right-3">
                           <span className="bg-purple-600 text-white px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-semibold">{job?.job_type || job?.jobType || 'Full-Time'}</span>
                         </div>
