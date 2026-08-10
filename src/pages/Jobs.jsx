@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Briefcase, MapPin, DollarSign, Plus, X, Loader2, Search, Home, Edit2, Trash2 } from 'lucide-react'
+import { Briefcase, MapPin, DollarSign, Plus, X, Loader2, Search, Home, Edit2, Trash2, ChevronLeft, ChevronRight } from 'lucide-react'
 import { supabase } from '../supabaseClient'
 import { isAdmin, adminLogout } from '../utils/adminAuth'
 
@@ -155,9 +155,9 @@ const Jobs = () => {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar" id="jobs-page-carousel">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-3xl shadow-md overflow-hidden">
+              <div key={i} className="bg-white rounded-3xl shadow-md overflow-hidden w-[85vw] sm:w-[350px] flex-shrink-0 snap-center">
                 <div className="h-48 bg-slate-200 animate-pulse" />
                 <div className="p-6"><div className="h-6 bg-slate-200 rounded animate-pulse mb-3" /></div>
               </div>
@@ -237,47 +237,74 @@ const Jobs = () => {
                 <h3 className="text-xl font-semibold text-slate-600 mb-2">No jobs found</h3>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredJobs.map((job) => (
-                  <div key={job.id} className="bg-white rounded-3xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
-                    <div className="relative h-48 overflow-hidden">
-                      <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                      <div className="absolute top-3 right-3">
-                        <span className="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold">{job?.job_type || job?.jobType || 'Full-Time'}</span>
-                      </div>
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2">{job?.title || 'Job Title'}</h3>
-                      <div className="space-y-2 mb-4">
-                        <div className="flex items-center text-slate-600 text-sm">
-                          <DollarSign className="h-4 w-4 mr-2 text-purple-600" />
-                          {job?.salary || 'Salary not specified'}
-                        </div>
-                        <div className="flex items-center text-slate-600 text-sm">
-                          <MapPin className="h-4 w-4 mr-2 text-purple-600" />
-                          {job?.location || 'Location not specified'}
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {(job?.skills || '').split(',').filter(s => s.trim()).slice(0, 3).map((skill, i) => (
-                          <span key={i} className="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs font-medium">{skill.trim()}</span>
-                        ))}
-                      </div>
-                      <div className="flex gap-2">
-                        <Link to={`/jobs/${job.id}`} className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white px-4 py-2 rounded-xl font-semibold text-center transition-all duration-300">View Details</Link>
-                        {isUserAdmin && (
-                          <>
-                            <div className="flex gap-2">
-                              <button onClick={() => handleEditJob(job)} className="p-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-xl transition-all"><Edit2 className="h-4 w-4" /></button>
-                              <button onClick={() => handleDeleteJob(job.id)} className="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-xl transition-all"><Trash2 className="h-4 w-4" /></button>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </div>
+              <>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold text-slate-900">All Jobs</h2>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        const container = document.getElementById('jobs-page-carousel')
+                        if (container) container.scrollBy({ left: -350, behavior: 'smooth' })
+                      }}
+                      disabled={filteredJobs.length <= 1}
+                      className="p-2 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-600 transition disabled:opacity-50"
+                    >
+                      <ChevronLeft className="h-5 w-5" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        const container = document.getElementById('jobs-page-carousel')
+                        if (container) container.scrollBy({ left: 350, behavior: 'smooth' })
+                      }}
+                      disabled={filteredJobs.length <= 1}
+                      className="p-2 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-600 transition disabled:opacity-50"
+                    >
+                      <ChevronRight className="h-5 w-5" />
+                    </button>
                   </div>
-                ))}
-              </div>
+                </div>
+                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar" id="jobs-page-carousel">
+                  {filteredJobs.map((job) => (
+                    <div key={job.id} className="bg-white rounded-3xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[85vw] sm:w-[350px] flex-shrink-0 snap-center">
+                      <div className="relative h-48 overflow-hidden">
+                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
+                        <div className="absolute top-3 right-3">
+                          <span className="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold">{job?.job_type || job?.jobType || 'Full-Time'}</span>
+                        </div>
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2">{job?.title || 'Job Title'}</h3>
+                        <div className="space-y-2 mb-4">
+                          <div className="flex items-center text-slate-600 text-sm">
+                            <DollarSign className="h-4 w-4 mr-2 text-purple-600" />
+                            {job?.salary || 'Salary not specified'}
+                          </div>
+                          <div className="flex items-center text-slate-600 text-sm">
+                            <MapPin className="h-4 w-4 mr-2 text-purple-600" />
+                            {job?.location || 'Location not specified'}
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {(job?.skills || '').split(',').filter(s => s.trim()).slice(0, 3).map((skill, i) => (
+                            <span key={i} className="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs font-medium">{skill.trim()}</span>
+                          ))}
+                        </div>
+                        <div className="flex gap-2">
+                          <Link to={`/jobs/${job.id}`} className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white px-4 py-2 rounded-xl font-semibold text-center transition-all duration-300">View Details</Link>
+                          {isUserAdmin && (
+                            <>
+                              <div className="flex gap-2">
+                                <button onClick={() => handleEditJob(job)} className="p-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-xl transition-all"><Edit2 className="h-4 w-4" /></button>
+                                <button onClick={() => handleDeleteJob(job.id)} className="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-xl transition-all"><Trash2 className="h-4 w-4" /></button>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
             )}
           </>
         )}

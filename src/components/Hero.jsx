@@ -210,15 +210,21 @@ const Hero = () => {
                 <h2 className="text-2xl font-bold text-white">Featured Jobs</h2>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => setJobIndex((prev) => (prev - 3 < 0 ? Math.max(0, (jobs || []).length - 3) : prev - 3))}
-                    disabled={!jobs || jobs.length <= 3}
+                    onClick={() => {
+                      const container = document.getElementById('jobs-carousel')
+                      if (container) container.scrollBy({ left: -350, behavior: 'smooth' })
+                    }}
+                    disabled={!jobs || jobs.length <= 1}
                     className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition disabled:opacity-50"
                   >
                     <ChevronLeft className="h-6 w-6" />
                   </button>
                   <button
-                    onClick={() => setJobIndex((prev) => (prev + 3 >= (jobs || []).length ? 0 : prev + 3))}
-                    disabled={!jobs || jobs.length <= 3}
+                    onClick={() => {
+                      const container = document.getElementById('jobs-carousel')
+                      if (container) container.scrollBy({ left: 350, behavior: 'smooth' })
+                    }}
+                    disabled={!jobs || jobs.length <= 1}
                     className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition disabled:opacity-50"
                   >
                     <ChevronRight className="h-6 w-6" />
@@ -227,9 +233,9 @@ const Hero = () => {
               </div>
 
               {loading ? (
-                <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-6 w-full">
+                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar" id="jobs-carousel">
                   {[...Array(4)].map((_, i) => (
-                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden w-full">
+                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden w-[85vw] sm:w-[350px] flex-shrink-0 snap-center">
                       <div className="h-24 sm:h-48 bg-slate-200 dark:bg-slate-700 animate-pulse" />
                       <div className="p-1.5 sm:p-5">
                         <div className="h-3 sm:h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1 sm:mb-2" />
@@ -241,15 +247,15 @@ const Hero = () => {
               ) : !Array.isArray(jobs) || jobs.length === 0 ? (
                 <div className="text-center text-slate-400 py-8">No jobs found</div>
               ) : (
-                <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-6 w-full">
-                  {(jobs || []).slice(jobIndex, jobIndex + 3).map((job) => (
-                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-full">
+                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar" id="jobs-carousel">
+                  {(jobs || []).map((job) => (
+                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-[85vw] sm:w-[350px] flex-shrink-0 snap-center">
                       <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full">
                         {job.banner_url || job.banner ? (
-                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full h-24 sm:h-48 object-cover object-center" />
+                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full h-24 sm:h-48 object-contain" />
                         ) : (
                           <div className="h-24 sm:h-40 bg-purple-900/40 flex items-center justify-center">
-                            <span className="text-2xl sm:text-4xl">�</span>
+                            <span className="text-2xl sm:text-4xl">📋</span>
                           </div>
                         )}
                         <div className="p-1.5 sm:p-5">
