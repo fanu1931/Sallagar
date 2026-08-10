@@ -233,13 +233,13 @@ const Hero = () => {
               </div>
 
               {loading ? (
-                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar" id="jobs-carousel">
+                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar" id="jobs-carousel">
                   {[...Array(4)].map((_, i) => (
-                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden w-[70vw] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
-                      <div className="aspect-video sm:h-40 bg-slate-200 dark:bg-slate-700 animate-pulse" />
-                      <div className="p-1.5 sm:p-5">
-                        <div className="h-3 sm:h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1 sm:mb-2" />
-                        <div className="h-2 sm:h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1 sm:mb-2" />
+                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden w-[30%] min-w-[110px] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
+                      <div className="aspect-video h-16 md:h-40 bg-slate-200 dark:bg-slate-700 animate-pulse" />
+                      <div className="p-2">
+                        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1" />
+                        <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1" />
                       </div>
                     </div>
                   ))}
@@ -247,24 +247,24 @@ const Hero = () => {
               ) : !Array.isArray(jobs) || jobs.length === 0 ? (
                 <div className="text-center text-slate-400 py-8">No jobs found</div>
               ) : (
-                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar" id="jobs-carousel">
+                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar" id="jobs-carousel">
                   {(jobs || []).map((job) => (
-                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-[70vw] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
+                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-[30%] min-w-[110px] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
                       <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full">
                         {job.banner_url || job.banner ? (
-                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full aspect-video sm:h-40 object-contain" />
+                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full aspect-video h-16 md:h-40 object-contain" />
                         ) : (
-                          <div className="aspect-video sm:h-40 bg-purple-900/40 flex items-center justify-center">
-                            <span className="text-2xl sm:text-4xl">📋</span>
+                          <div className="aspect-video h-16 md:h-40 bg-purple-900/40 flex items-center justify-center">
+                            <span className="text-xl sm:text-4xl">📋</span>
                           </div>
                         )}
-                        <div className="p-1.5 sm:p-5">
-                          <span className="text-[8px] sm:text-xs font-semibold px-1.5 sm:px-3 py-0.5 sm:py-1 bg-purple-500/20 text-purple-300 rounded-full">{job.job_type || job.jobType || 'Full-Time'}</span>
-                          <h3 className="text-[10px] sm:text-lg font-bold text-white mt-1 sm:mt-2 mb-1 sm:mb-2 line-clamp-1">{job.title}</h3>
-                          <p className="text-[8px] sm:text-sm text-slate-300 mb-1 sm:mb-3 line-clamp-1 sm:line-clamp-2">{job.location} • {job.salary}</p>
-                          <div className="flex items-center justify-between text-[8px] sm:text-xs text-slate-400">
-                            <span className="hidden sm:inline">{job.created_at ? new Date(job.created_at).toLocaleDateString() : ''}</span>
-                            <span className="font-semibold text-purple-400 flex items-center text-[8px] sm:text-xs">Apply →</span>
+                        <div className="p-2">
+                          <span className="text-[8px] font-semibold px-1.5 py-0.5 bg-purple-500/20 text-purple-300 rounded-full">{job.job_type || job.jobType || 'Full-Time'}</span>
+                          <h3 className="text-xs font-bold text-white mt-1 mb-1 line-clamp-1">{job.title}</h3>
+                          <p className="text-[10px] text-slate-300 mb-1 line-clamp-1">{job.location} • {job.salary}</p>
+                          <div className="flex items-center justify-between text-[8px] text-slate-400">
+                            <span className="hidden md:inline">{job.created_at ? new Date(job.created_at).toLocaleDateString() : ''}</span>
+                            <span className="font-semibold text-purple-400 flex items-center text-[8px]">Apply →</span>
                           </div>
                         </div>
                       </div>

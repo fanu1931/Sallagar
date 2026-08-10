@@ -155,11 +155,11 @@ const Jobs = () => {
         </div>
 
         {loading ? (
-          <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar" id="jobs-page-carousel">
+          <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar" id="jobs-page-carousel">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-3xl shadow-md overflow-hidden w-[70vw] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
-                <div className="aspect-video sm:h-40 bg-slate-200 animate-pulse" />
-                <div className="p-6"><div className="h-6 bg-slate-200 rounded animate-pulse mb-3" /></div>
+              <div key={i} className="bg-white rounded-2xl shadow-md overflow-hidden w-[30%] min-w-[110px] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
+                <div className="aspect-video h-16 md:h-40 bg-slate-200 animate-pulse" />
+                <div className="p-2"><div className="h-4 bg-slate-200 rounded animate-pulse mb-1" /></div>
               </div>
             ))}
           </div>
@@ -263,39 +263,39 @@ const Jobs = () => {
                     </button>
                   </div>
                 </div>
-                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar" id="jobs-page-carousel">
+                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar" id="jobs-page-carousel">
                   {filteredJobs.map((job) => (
-                    <div key={job.id} className="bg-white rounded-3xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[70vw] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
-                      <div className="relative aspect-video sm:h-40 overflow-hidden">
+                    <div key={job.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[30%] min-w-[110px] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
+                      <div className="relative aspect-video h-16 md:h-40 overflow-hidden">
                         <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
-                        <div className="absolute top-3 right-3">
-                          <span className="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold">{job?.job_type || job?.jobType || 'Full-Time'}</span>
+                        <div className="absolute top-1 right-1">
+                          <span className="bg-purple-600 text-white px-1.5 py-0.5 rounded-full text-[8px] font-semibold">{job?.job_type || job?.jobType || 'Full-Time'}</span>
                         </div>
                       </div>
-                      <div className="p-6">
-                        <h3 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2">{job?.title || 'Job Title'}</h3>
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center text-slate-600 text-sm">
-                            <DollarSign className="h-4 w-4 mr-2 text-purple-600" />
+                      <div className="p-2">
+                        <h3 className="text-xs font-bold text-slate-900 mb-1 line-clamp-2">{job?.title || 'Job Title'}</h3>
+                        <div className="space-y-1 mb-2">
+                          <div className="flex items-center text-slate-600 text-[10px]">
+                            <DollarSign className="h-3 w-3 mr-1 text-purple-600" />
                             {job?.salary || 'Salary not specified'}
                           </div>
-                          <div className="flex items-center text-slate-600 text-sm">
-                            <MapPin className="h-4 w-4 mr-2 text-purple-600" />
+                          <div className="flex items-center text-slate-600 text-[10px]">
+                            <MapPin className="h-3 w-3 mr-1 text-purple-600" />
                             {job?.location || 'Location not specified'}
                           </div>
                         </div>
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {(job?.skills || '').split(',').filter(s => s.trim()).slice(0, 3).map((skill, i) => (
-                            <span key={i} className="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs font-medium">{skill.trim()}</span>
+                        <div className="flex flex-wrap gap-1 mb-2">
+                          {(job?.skills || '').split(',').filter(s => s.trim()).slice(0, 2).map((skill, i) => (
+                            <span key={i} className="bg-purple-100 text-purple-700 px-1 py-0.5 rounded-full text-[8px] font-medium">{skill.trim()}</span>
                           ))}
                         </div>
-                        <div className="flex gap-2">
-                          <Link to={`/jobs/${job.id}`} className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white px-4 py-2 rounded-xl font-semibold text-center transition-all duration-300">View Details</Link>
+                        <div className="flex gap-1">
+                          <Link to={`/jobs/${job.id}`} className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white px-2 py-1 rounded-lg font-semibold text-center transition-all duration-300 text-[10px]">View</Link>
                           {isUserAdmin && (
                             <>
-                              <div className="flex gap-2">
-                                <button onClick={() => handleEditJob(job)} className="p-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-xl transition-all"><Edit2 className="h-4 w-4" /></button>
-                                <button onClick={() => handleDeleteJob(job.id)} className="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-xl transition-all"><Trash2 className="h-4 w-4" /></button>
+                              <div className="flex gap-1">
+                                <button onClick={() => handleEditJob(job)} className="p-1 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-lg transition-all"><Edit2 className="h-3 w-3" /></button>
+                                <button onClick={() => handleDeleteJob(job.id)} className="p-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg transition-all"><Trash2 className="h-3 w-3" /></button>
                               </div>
                             </>
                           )}
