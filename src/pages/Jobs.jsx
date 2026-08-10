@@ -250,29 +250,29 @@ const Jobs = () => {
                         </div>
                       </div>
                       <div className="p-1.5 sm:p-3">
-                        <h3 className="text-[10px] sm:text-sm sm:text-lg font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-2">{job?.title || 'Job Title'}</h3>
-                        <div className="space-y-0.5 sm:space-y-1 sm:space-y-2 mb-2 sm:mb-3">
-                          <div className="flex items-center text-slate-600 text-[9px] sm:text-xs sm:text-sm">
+                        <h3 className="text-[10px] sm:text-lg font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-2">{job?.title || 'Job Title'}</h3>
+                        <div className="space-y-0.5 sm:space-y-2 mb-2 sm:mb-3">
+                          <div className="flex items-center text-slate-600 text-[9px] sm:text-sm">
                             <DollarSign className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-purple-600" />
                             {job?.salary || 'Salary not specified'}
                           </div>
-                          <div className="flex items-center text-slate-600 text-[9px] sm:text-xs sm:text-sm">
+                          <div className="flex items-center text-slate-600 text-[9px] sm:text-sm">
                             <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-purple-600" />
                             {job?.location || 'Location not specified'}
                           </div>
                         </div>
                         <div className="flex flex-wrap gap-1 sm:gap-2 mb-2 sm:mb-3">
                           {(job?.skills || '').split(',').filter(s => s.trim()).slice(0, 3).map((skill, i) => (
-                            <span key={i} className="bg-purple-100 text-purple-700 px-1 sm:px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[8px] sm:text-[10px] sm:text-xs font-medium">{skill.trim()}</span>
+                            <span key={i} className="bg-purple-100 text-purple-700 px-1 sm:px-2 py-0.5 sm:py-1 rounded-full text-[8px] sm:text-xs font-medium">{skill.trim()}</span>
                           ))}
                         </div>
                         <div className="flex gap-1 sm:gap-2">
-                          <Link to={`/jobs/${job.id}`} className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white px-2 sm:px-3 sm:px-4 py-1 sm:py-2 rounded-xl font-semibold text-center transition-all duration-300 text-[9px] sm:text-xs sm:text-sm">View Details</Link>
+                          <Link to={`/jobs/${job.id}`} className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white px-2 sm:px-4 py-1 sm:py-2 rounded-xl font-semibold text-center transition-all duration-300 text-[9px] sm:text-sm">View Details</Link>
                           {isUserAdmin && (
                             <>
                               <div className="flex gap-1 sm:gap-2">
-                                <button onClick={() => handleEditJob(job)} className="p-1 sm:p-1.5 sm:p-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-xl transition-all"><Edit2 className="h-3 w-3 sm:h-4 sm:w-4" /></button>
-                                <button onClick={() => handleDeleteJob(job.id)} className="p-1 sm:p-1.5 sm:p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-xl transition-all"><Trash2 className="h-3 w-3 sm:h-4 sm:w-4" /></button>
+                                <button onClick={() => handleEditJob(job)} className="p-1 sm:p-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-xl transition-all"><Edit2 className="h-3 w-3 sm:h-4 sm:w-4" /></button>
+                                <button onClick={() => handleDeleteJob(job.id)} className="p-1 sm:p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-xl transition-all"><Trash2 className="h-3 w-3 sm:h-4 sm:w-4" /></button>
                               </div>
                             </>
                           )}
