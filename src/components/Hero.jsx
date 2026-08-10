@@ -209,13 +209,13 @@ const Hero = () => {
               <h2 className="text-2xl font-bold text-white mb-4">Featured Jobs</h2>
 
               {loading ? (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
                   {[...Array(4)].map((_, i) => (
-                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden">
-                      <div className="h-44 sm:h-48 bg-gray-100 dark:bg-slate-700 animate-pulse rounded-t-2xl" />
-                      <div className="p-3">
-                        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-2" />
-                        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-2/3" />
+                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden w-[32vw] min-w-[110px] md:w-full flex-shrink-0 snap-center">
+                      <div className="h-16 sm:h-44 bg-gray-100 dark:bg-slate-700 animate-pulse rounded-t-lg" />
+                      <div className="p-1.5 sm:p-3">
+                        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1" />
+                        <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-2/3" />
                       </div>
                     </div>
                   ))}
@@ -223,24 +223,24 @@ const Hero = () => {
               ) : !Array.isArray(jobs) || jobs.length === 0 ? (
                 <div className="text-center text-slate-400 py-8">No jobs found</div>
               ) : (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
                   {(jobs || []).map((job) => (
-                    <Link key={job.id} to={`/jobs/${job.id}`} className="block">
+                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-[32vw] min-w-[110px] md:w-full flex-shrink-0 snap-center">
                       <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full">
                         {job.banner_url || job.banner ? (
-                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full h-44 sm:h-48 object-cover rounded-t-2xl" />
+                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full h-16 sm:h-44 object-cover rounded-t-lg" />
                         ) : (
-                          <div className="h-44 sm:h-48 bg-purple-900/40 flex items-center justify-center rounded-t-2xl">
-                            <span className="text-2xl sm:text-4xl">📋</span>
+                          <div className="h-16 sm:h-44 bg-purple-900/40 flex items-center justify-center rounded-t-lg">
+                            <span className="text-xl sm:text-4xl">📋</span>
                           </div>
                         )}
-                        <div className="p-3">
-                          <span className="text-[10px] sm:text-xs font-semibold px-2 py-1 bg-purple-500/20 text-purple-300 rounded-full">{job.job_type || job.jobType || 'Full-Time'}</span>
-                          <h3 className="text-sm sm:text-lg font-bold text-white mt-2 mb-2 line-clamp-1">{job.title}</h3>
-                          <p className="text-xs sm:text-sm text-slate-300 mb-2 line-clamp-1">{job.location} • {job.salary}</p>
-                          <div className="flex items-center justify-between text-[10px] sm:text-xs text-slate-400">
+                        <div className="p-1.5 sm:p-3">
+                          <span className="text-[9px] sm:text-[10px] font-semibold px-1.5 sm:px-2 py-0.5 sm:py-1 bg-purple-500/20 text-purple-300 rounded-full">{job.job_type || job.jobType || 'Full-Time'}</span>
+                          <h3 className="text-[10px] sm:text-sm sm:text-lg font-bold text-white mt-1 sm:mt-2 mb-1 sm:mb-2 line-clamp-1">{job.title}</h3>
+                          <p className="text-[9px] sm:text-xs sm:text-sm text-slate-300 mb-1 sm:mb-2 line-clamp-1">{job.location} • {job.salary}</p>
+                          <div className="flex items-center justify-between text-[9px] sm:text-[10px] sm:text-xs text-slate-400">
                             <span className="hidden md:inline">{job.created_at ? new Date(job.created_at).toLocaleDateString() : ''}</span>
-                            <span className="font-semibold text-purple-400 flex items-center text-[10px] sm:text-xs">Apply →</span>
+                            <span className="font-semibold text-purple-400 flex items-center text-[9px] sm:text-[10px] sm:text-xs">Apply →</span>
                           </div>
                         </div>
                       </div>
