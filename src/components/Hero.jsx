@@ -212,7 +212,7 @@ const Hero = () => {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
                   {[...Array(4)].map((_, i) => (
                     <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden">
-                      <div className="aspect-video h-32 sm:h-40 bg-gray-100 dark:bg-slate-700 animate-pulse" />
+                      <div className="h-44 sm:h-48 bg-gray-100 dark:bg-slate-700 animate-pulse rounded-t-2xl" />
                       <div className="p-3">
                         <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-2" />
                         <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-2/3" />
@@ -228,9 +228,9 @@ const Hero = () => {
                     <Link key={job.id} to={`/jobs/${job.id}`} className="block">
                       <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full">
                         {job.banner_url || job.banner ? (
-                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full aspect-video h-32 sm:h-40 object-contain bg-gray-100" />
+                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full h-44 sm:h-48 object-cover rounded-t-2xl" />
                         ) : (
-                          <div className="aspect-video h-32 sm:h-40 bg-purple-900/40 flex items-center justify-center">
+                          <div className="h-44 sm:h-48 bg-purple-900/40 flex items-center justify-center rounded-t-2xl">
                             <span className="text-2xl sm:text-4xl">📋</span>
                           </div>
                         )}
