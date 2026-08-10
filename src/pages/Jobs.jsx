@@ -277,9 +277,9 @@ const Jobs = () => {
               <div ref={sliderRef} className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
                   {filteredJobs.map((job) => (
                     <div key={job.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[32vw] min-w-[110px] md:w-full flex-shrink-0 snap-center">
-                      <div className="relative aspect-[16/9] h-16 sm:h-44 rounded-t-lg bg-slate-900">
-                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-full object-contain block mx-auto" />
-                        <div className="absolute top-2 right-2 z-10 sm:top-3 sm:right-3">
+                      <div className="relative p-0 m-0 w-full overflow-hidden rounded-t-2xl">
+                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-44 sm:h-48 object-cover rounded-t-2xl block border-b border-gray-100" />
+                        <div className="absolute top-3 right-3 z-10">
                           <span className="bg-purple-600 text-white px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-semibold">{job?.job_type || job?.jobType || 'Full-Time'}</span>
                         </div>
                       </div>
