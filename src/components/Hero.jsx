@@ -204,42 +204,18 @@ const Hero = () => {
               <ChevronDown className="h-5 w-5 text-purple-300"/>
             </div>
 
-            {/* Featured Jobs Slider */}
+            {/* Featured Jobs */}
             <div className="mt-6 max-w-7xl mx-auto pb-4 text-left">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold text-white">Featured Jobs</h2>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => {
-                      const container = document.getElementById('jobs-carousel')
-                      if (container) container.scrollBy({ left: -350, behavior: 'smooth' })
-                    }}
-                    disabled={!jobs || jobs.length <= 1}
-                    className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition disabled:opacity-50"
-                  >
-                    <ChevronLeft className="h-6 w-6" />
-                  </button>
-                  <button
-                    onClick={() => {
-                      const container = document.getElementById('jobs-carousel')
-                      if (container) container.scrollBy({ left: 350, behavior: 'smooth' })
-                    }}
-                    disabled={!jobs || jobs.length <= 1}
-                    className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition disabled:opacity-50"
-                  >
-                    <ChevronRight className="h-6 w-6" />
-                  </button>
-                </div>
-              </div>
+              <h2 className="text-2xl font-bold text-white mb-4">Featured Jobs</h2>
 
               {loading ? (
-                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar" id="jobs-carousel">
+                <div className="grid grid-cols-2 gap-3 sm:gap-6">
                   {[...Array(4)].map((_, i) => (
-                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden w-[30%] min-w-[110px] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
-                      <div className="aspect-video h-16 md:h-40 bg-slate-200 dark:bg-slate-700 animate-pulse" />
-                      <div className="p-2">
-                        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1" />
-                        <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1" />
+                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden">
+                      <div className="h-16 md:h-24 lg:h-32 bg-gray-100 dark:bg-slate-700 animate-pulse" />
+                      <div className="p-3">
+                        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-2" />
+                        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-2/3" />
                       </div>
                     </div>
                   ))}
@@ -247,24 +223,24 @@ const Hero = () => {
               ) : !Array.isArray(jobs) || jobs.length === 0 ? (
                 <div className="text-center text-slate-400 py-8">No jobs found</div>
               ) : (
-                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar" id="jobs-carousel">
+                <div className="grid grid-cols-2 gap-3 sm:gap-6">
                   {(jobs || []).map((job) => (
-                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-[30%] min-w-[110px] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
+                    <Link key={job.id} to={`/jobs/${job.id}`} className="block">
                       <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full">
                         {job.banner_url || job.banner ? (
-                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full aspect-video h-16 md:h-40 object-cover" />
+                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full h-16 md:h-24 lg:h-32 object-cover" />
                         ) : (
-                          <div className="aspect-video h-16 md:h-40 bg-purple-900/40 flex items-center justify-center">
-                            <span className="text-xl sm:text-4xl">📋</span>
+                          <div className="h-16 md:h-24 lg:h-32 bg-purple-900/40 flex items-center justify-center">
+                            <span className="text-2xl sm:text-4xl">📋</span>
                           </div>
                         )}
-                        <div className="p-2">
-                          <span className="text-[8px] font-semibold px-1.5 py-0.5 bg-purple-500/20 text-purple-300 rounded-full">{job.job_type || job.jobType || 'Full-Time'}</span>
-                          <h3 className="text-xs font-bold text-white mt-1 mb-1 line-clamp-1">{job.title}</h3>
-                          <p className="text-[10px] text-slate-300 mb-1 line-clamp-1">{job.location} • {job.salary}</p>
-                          <div className="flex items-center justify-between text-[8px] text-slate-400">
+                        <div className="p-3">
+                          <span className="text-[10px] sm:text-xs font-semibold px-2 py-1 bg-purple-500/20 text-purple-300 rounded-full">{job.job_type || job.jobType || 'Full-Time'}</span>
+                          <h3 className="text-sm sm:text-lg font-bold text-white mt-2 mb-2 line-clamp-1">{job.title}</h3>
+                          <p className="text-xs sm:text-sm text-slate-300 mb-2 line-clamp-1">{job.location} • {job.salary}</p>
+                          <div className="flex items-center justify-between text-[10px] sm:text-xs text-slate-400">
                             <span className="hidden md:inline">{job.created_at ? new Date(job.created_at).toLocaleDateString() : ''}</span>
-                            <span className="font-semibold text-purple-400 flex items-center text-[8px]">Apply →</span>
+                            <span className="font-semibold text-purple-400 flex items-center text-[10px] sm:text-xs">Apply →</span>
                           </div>
                         </div>
                       </div>
