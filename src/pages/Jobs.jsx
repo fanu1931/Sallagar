@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Briefcase, MapPin, DollarSign, Plus, X, Loader2, Search, Home, Edit2, Trash2 } from 'lucide-react'
 import { supabase } from '../supabaseClient'
@@ -13,6 +13,9 @@ const Jobs = () => {
   const [isUserAdmin, setIsUserAdmin] = useState(() => localStorage.getItem('is_admin') === 'true')
   const [editingJob, setEditingJob] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const sliderRef = useRef(null)
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
 
   const getImageUrl = (job) => {
     let imageUrl = job?.banner_url || job?.banner || job?.image_url || job?.image
@@ -48,6 +51,37 @@ const Jobs = () => {
     }
     fetchJobs()
   }, [])
+
+  // Handle window resize to update mobile state
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Auto-slide functionality for mobile view only
+  useEffect(() => {
+    if (!sliderRef.current || filteredJobs.length === 0 || !isMobile) return
+
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => {
+        const nextSlide = (prev + 1) % filteredJobs.length
+        const slider = sliderRef.current
+        if (slider) {
+          const slideWidth = slider.children[0]?.offsetWidth || 0
+          slider.scrollTo({
+            left: nextSlide * slideWidth,
+            behavior: 'smooth'
+          })
+        }
+        return nextSlide
+      })
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [filteredJobs.length, isMobile])
 
   const [newJob, setNewJob] = useState({
     title: '', salary: '', skills: '', jobType: 'Full-Time',
@@ -240,7 +274,7 @@ const Jobs = () => {
                 <h3 className="text-xl font-semibold text-slate-600 mb-2">No jobs found</h3>
               </div>
             ) : (
-              <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
+              <div ref={sliderRef} className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
                   {filteredJobs.map((job) => (
                     <div key={job.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[32vw] min-w-[110px] md:w-full flex-shrink-0 snap-center">
                       <div className="relative aspect-[16/9] h-16 sm:h-44 rounded-t-lg bg-slate-900">
