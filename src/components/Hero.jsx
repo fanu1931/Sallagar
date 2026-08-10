@@ -252,7 +252,7 @@ const Hero = () => {
                     <Link key={job.id} to={`/jobs/${job.id}`} className="block w-[30%] min-w-[110px] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
                       <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full">
                         {job.banner_url || job.banner ? (
-                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full aspect-video h-16 md:h-40 object-contain" />
+                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full aspect-video h-16 md:h-40 object-cover" />
                         ) : (
                           <div className="aspect-video h-16 md:h-40 bg-purple-900/40 flex items-center justify-center">
                             <span className="text-xl sm:text-4xl">📋</span>

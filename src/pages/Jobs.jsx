@@ -267,7 +267,7 @@ const Jobs = () => {
                   {filteredJobs.map((job) => (
                     <div key={job.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[30%] min-w-[110px] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
                       <div className="relative aspect-video h-16 md:h-40 overflow-hidden">
-                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
+                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                         <div className="absolute top-1 right-1">
                           <span className="bg-purple-600 text-white px-1.5 py-0.5 rounded-full text-[8px] font-semibold">{job?.job_type || job?.jobType || 'Full-Time'}</span>
                         </div>
