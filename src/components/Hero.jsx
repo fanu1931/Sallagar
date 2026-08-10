@@ -1,96 +1,76 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Star, Shield, CheckCircle, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react'
+import { ArrowRight, Star, Shield, CheckCircle, ChevronLeft, ChevronRight, ChevronDown, Briefcase } from 'lucide-react'
 import { supabase } from '../supabaseClient'
 
 const Hero = () => {
-  // Helper function to safely render localized strings (handles JSON strings and objects)
-  const getLocalizedText = (value, lang = 'mr') => {
-    if (!value) return '';
-    if (typeof value === 'string') {
-      try {
-        const parsed = JSON.parse(value);
-        if (typeof parsed === 'object' && parsed !== null) {
-          return parsed[lang] || parsed.en || parsed.hi || Object.values(parsed)[0] || '';
-        }
-      } catch (e) {
-        return value;
-      }
-      return value;
-    }
-    if (typeof value === 'object') {
-      return value[lang] || value.en || value.hi || Object.values(value)[0] || '';
-    }
-    return String(value);
-  };
-
   // Safe State Initialization
-  const [blogs, setBlogs] = useState([])
+  const [jobs, setJobs] = useState([])
   const [products, setProducts] = useState([])
-  const [blogIndex, setBlogIndex] = useState(0)
+  const [jobIndex, setJobIndex] = useState(0)
   const [prodIndex, setProdIndex] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // Fetch blogs and products from Supabase with caching
+  // Fetch jobs and products from Supabase with caching
   useEffect(() => {
     let isMounted = true
-    
+
     if (!supabase) {
       console.error('Supabase client not initialized')
       if (isMounted) {
-        setBlogs([])
+        setJobs([])
         setProducts([])
         setLoading(false)
       }
       return
     }
-    
+
     const fetchData = async () => {
       // Check cache first
-      const cachedBlogs = localStorage.getItem('cached_hero_blogs')
+      const cachedJobs = localStorage.getItem('cached_hero_jobs')
       const cachedProducts = localStorage.getItem('cached_hero_products')
       const cacheTime = localStorage.getItem('hero_cache_time')
       const now = Date.now()
       const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
-      
-      if (cachedBlogs && cachedProducts && cacheTime && (now - parseInt(cacheTime)) < CACHE_DURATION) {
+
+      if (cachedJobs && cachedProducts && cacheTime && (now - parseInt(cacheTime)) < CACHE_DURATION) {
         if (isMounted) {
-          setBlogs(JSON.parse(cachedBlogs))
+          setJobs(JSON.parse(cachedJobs))
           setProducts(JSON.parse(cachedProducts))
           setLoading(false)
         }
         return
       }
-      
+
       try {
         setLoading(true)
-        
-        let blogsData = []
+
+        let jobsData = []
         let productsData = []
-        
-        // Fetch blogs
-        const { data: blogData, error: blogError } = await supabase
-          .from('blogs')
+
+        // Fetch jobs
+        const { data: jobData, error: jobError } = await supabase
+          .from('jobs')
           .select('*')
           .order('created_at', { ascending: false })
           .limit(12)
-        
-        if (blogError) {
-          console.error('Error fetching blogs:', blogError)
-          if (isMounted) setBlogs([])
+
+        if (jobError) {
+          console.error('Error fetching jobs:', jobError)
+          if (isMounted) setJobs([])
         } else {
-          blogsData = Array.isArray(blogData) ? blogData : []
-          if (isMounted) setBlogs(blogsData)
+          jobsData = Array.isArray(jobData) ? jobData : []
+          if (isMounted) setJobs(jobsData)
         }
-        
+
         // Fetch products
         const { data: productData, error: productError } = await supabase
           .from('products')
           .select('*')
           .order('created_at', { ascending: false })
           .limit(16)
-        
+
         if (productError) {
           console.error('Error fetching products:', productError)
           if (isMounted) setProducts([])
@@ -98,10 +78,10 @@ const Hero = () => {
           productsData = Array.isArray(productData) ? productData : []
           if (isMounted) setProducts(productsData)
         }
-        
+
         // Cache the results
         if (isMounted) {
-          localStorage.setItem('cached_hero_blogs', JSON.stringify(blogsData))
+          localStorage.setItem('cached_hero_jobs', JSON.stringify(jobsData))
           localStorage.setItem('cached_hero_products', JSON.stringify(productsData))
           localStorage.setItem('hero_cache_time', now.toString())
         }
@@ -109,26 +89,26 @@ const Hero = () => {
         console.error('Error fetching data:', error)
         if (isMounted) {
           setError(error.message)
-          setBlogs([])
+          setJobs([])
           setProducts([])
         }
       } finally {
         if (isMounted) setLoading(false)
       }
     }
-    
+
     fetchData()
     return () => { isMounted = false }
   }, [])
 
-  // Safe Auto-Slider Intervals for blogs
+  // Safe Auto-Slider Intervals for jobs
   useEffect(() => {
-    if (!blogs || blogs.length <= 3) return
+    if (!jobs || jobs.length <= 3) return
     const timer = setInterval(() => {
-      setBlogIndex((prev) => (prev + 3 >= blogs.length ? 0 : prev + 3))
+      setJobIndex((prev) => (prev + 3 >= jobs.length ? 0 : prev + 3))
     }, 4000)
     return () => clearInterval(timer)
-  }, [blogs])
+  }, [jobs])
 
   // Safe Auto-Slider Intervals for products
   useEffect(() => {
@@ -170,24 +150,24 @@ const Hero = () => {
 
             {/* Main Heading */}
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white mb-3 tracking-tight drop-shadow-md">
-              आयुष्याचा खरा सल्लागार
+              Find Your Dream Job
             </h1>
 
             {/* Tagline */}
             <p className="text-xl sm:text-2xl text-purple-200 mb-3 max-w-3xl mx-auto font-light">
-              Good Thoughts, Health, Ayurveda, ani Motivation
+              Your Career Gateway to Opportunities
             </p>
 
             {/* Subheading */}
             <p className="text-base text-purple-200/90 mb-3 max-w-2xl mx-auto leading-relaxed">
-              Sallagar helps you discover the path to a better life through positive thoughts, 
-              Ayurvedic wisdom, and motivational insights.
+              Sallagar helps you discover the best job opportunities across various industries
+              and locations to advance your career.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-row gap-4 justify-center items-center mb-4">
-              <Link to="/blog" className="bg-orange-500 hover:bg-orange-600 text-black font-bold px-6 py-3 rounded-xl transition shadow-md flex items-center">
-                Explore Blog <ArrowRight className="ml-2 h-5 w-5" />
+              <Link to="/jobs" className="bg-orange-500 hover:bg-orange-600 text-black font-bold px-6 py-3 rounded-xl transition shadow-md flex items-center">
+                Explore Jobs <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <Link to="/categories" className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-3 rounded-xl transition shadow-md">
                 Product Sell
@@ -204,7 +184,7 @@ const Hero = () => {
                   <Star className="h-3 w-3 text-purple-300 fill-current" />
                   <Star className="h-3 w-3 text-purple-300 fill-current" />
                 </div>
-                <p className="text-[10px] font-medium text-white text-center">500+ Inspiring Articles</p>
+                <p className="text-[10px] font-medium text-white text-center">500+ Job Listings</p>
               </div>
 
               <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl p-1.5 shadow-xl">
@@ -214,7 +194,7 @@ const Hero = () => {
 
               <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl p-1.5 shadow-xl">
                 <Shield className="h-4 w-4 text-purple-300 mb-1 mx-auto" />
-                <p className="text-[10px] font-medium text-white text-center">Expert Wellness Team</p>
+                <p className="text-[10px] font-medium text-white text-center">Trusted Employers</p>
               </div>
             </div>
 
@@ -290,21 +270,21 @@ const Hero = () => {
               )}
             </div>
 
-            {/* Featured Blogs Slider */}
+            {/* Featured Jobs Slider */}
             <div className="mt-6 max-w-7xl mx-auto pb-4 text-left">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold text-white">Featured Blogs</h2>
+                <h2 className="text-2xl font-bold text-white">Featured Jobs</h2>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => setBlogIndex((prev) => (prev - 3 < 0 ? Math.max(0, (blogs || []).length - 3) : prev - 3))}
-                    disabled={!blogs || blogs.length <= 3}
+                    onClick={() => setJobIndex((prev) => (prev - 3 < 0 ? Math.max(0, (jobs || []).length - 3) : prev - 3))}
+                    disabled={!jobs || jobs.length <= 3}
                     className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition disabled:opacity-50"
                   >
                     <ChevronLeft className="h-6 w-6" />
                   </button>
                   <button
-                    onClick={() => setBlogIndex((prev) => (prev + 3 >= (blogs || []).length ? 0 : prev + 3))}
-                    disabled={!blogs || blogs.length <= 3}
+                    onClick={() => setJobIndex((prev) => (prev + 3 >= (jobs || []).length ? 0 : prev + 3))}
+                    disabled={!jobs || jobs.length <= 3}
                     className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition disabled:opacity-50"
                   >
                     <ChevronRight className="h-6 w-6" />
@@ -324,27 +304,27 @@ const Hero = () => {
                     </div>
                   ))}
                 </div>
-              ) : !Array.isArray(blogs) || blogs.length === 0 ? (
-                <div className="text-center text-slate-400 py-8">No blogs found</div>
+              ) : !Array.isArray(jobs) || jobs.length === 0 ? (
+                <div className="text-center text-slate-400 py-8">No jobs found</div>
               ) : (
                 <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-6 w-full">
-                  {(blogs || []).slice(blogIndex, blogIndex + 3).map((blog) => (
-                    <Link key={blog.id} to={`/blog/${blog.id}`} className="block w-full">
+                  {(jobs || []).slice(jobIndex, jobIndex + 3).map((job) => (
+                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-full">
                       <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full">
-                        {blog.image_url ? (
-                          <img src={blog.image_url} alt={getLocalizedText(blog.title)} className="w-full h-24 sm:h-48 object-cover object-center" />
+                        {job.banner_url || job.banner ? (
+                          <img src={job.banner_url || job.banner} alt={job.title} className="w-full h-24 sm:h-48 object-cover object-center" />
                         ) : (
                           <div className="h-24 sm:h-40 bg-purple-900/40 flex items-center justify-center">
-                            <span className="text-2xl sm:text-4xl">📝</span>
+                            <span className="text-2xl sm:text-4xl">�</span>
                           </div>
                         )}
                         <div className="p-1.5 sm:p-5">
-                          <span className="text-[8px] sm:text-xs font-semibold px-1.5 sm:px-3 py-0.5 sm:py-1 bg-purple-500/20 text-purple-300 rounded-full">{blog.category || 'Blog'}</span>
-                          <h3 className="text-[10px] sm:text-lg font-bold text-white mt-1 sm:mt-2 mb-1 sm:mb-2 line-clamp-1">{getLocalizedText(blog.title)}</h3>
-                          <p className="text-[8px] sm:text-sm text-slate-300 mb-1 sm:mb-3 line-clamp-1 sm:line-clamp-2">{getLocalizedText(blog.excerpt || blog.description) || 'No description'}</p>
+                          <span className="text-[8px] sm:text-xs font-semibold px-1.5 sm:px-3 py-0.5 sm:py-1 bg-purple-500/20 text-purple-300 rounded-full">{job.job_type || job.jobType || 'Full-Time'}</span>
+                          <h3 className="text-[10px] sm:text-lg font-bold text-white mt-1 sm:mt-2 mb-1 sm:mb-2 line-clamp-1">{job.title}</h3>
+                          <p className="text-[8px] sm:text-sm text-slate-300 mb-1 sm:mb-3 line-clamp-1 sm:line-clamp-2">{job.location} • {job.salary}</p>
                           <div className="flex items-center justify-between text-[8px] sm:text-xs text-slate-400">
-                            <span className="hidden sm:inline">{blog.created_at ? new Date(blog.created_at).toLocaleDateString() : ''}</span>
-                            <span className="font-semibold text-purple-400 flex items-center text-[8px] sm:text-xs">Read →</span>
+                            <span className="hidden sm:inline">{job.created_at ? new Date(job.created_at).toLocaleDateString() : ''}</span>
+                            <span className="font-semibold text-purple-400 flex items-center text-[8px] sm:text-xs">Apply →</span>
                           </div>
                         </div>
                       </div>

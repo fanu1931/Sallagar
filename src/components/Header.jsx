@@ -55,7 +55,7 @@ const Header = () => {
           setIsAdmin(true);
           setIsModalOpen(false);
           setPassword('');
-          window.location.href = '/blog';
+          window.location.href = '/jobs';
         } else {
           setError("Wrong admin credentials!");
           setPassword('');
@@ -122,8 +122,8 @@ const Header = () => {
               <span className="relative z-10">Home</span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-indigo-400 group-hover:w-full transition-all duration-300 ease-out rounded-full"></span>
             </Link>
-            <Link to="/blog" className="relative text-white hover:text-purple-300 px-5 py-2 rounded-full text-base font-semibold transition-all duration-200 group">
-              <span className="relative z-10">Blog</span>
+            <Link to="/jobs" className="relative text-white hover:text-purple-300 px-5 py-2 rounded-full text-base font-semibold transition-all duration-200 group">
+              <span className="relative z-10">Jobs</span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-indigo-400 group-hover:w-full transition-all duration-300 ease-out rounded-full"></span>
             </Link>
             <Link to="/categories" className="relative text-white hover:text-purple-300 px-5 py-2 rounded-full text-base font-semibold transition-all duration-200 group">
@@ -150,7 +150,7 @@ const Header = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="ब्लॉग किंवा प्रॉडक्ट्स शोधा..."
+                    placeholder="Search jobs or products..."
                     className="bg-white/10 text-white placeholder-purple-200/50 border border-purple-500/30 rounded-full px-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 w-48 transition-all duration-300"
                     autoFocus
                   />
@@ -209,11 +209,11 @@ const Header = () => {
               Home
             </Link>
             <Link 
-              to="/blog" 
+              to="/jobs" 
               onClick={() => setIsMobileMenuOpen(false)}
               className="block text-white hover:text-purple-300 px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200"
             >
-              Blog
+              Jobs
             </Link>
             <Link 
               to="/categories" 

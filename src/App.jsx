@@ -6,8 +6,8 @@ import Footer from './components/Footer'
 import { DarkModeProvider } from './contexts/DarkModeContext'
 
 // Lazy load pages for better performance
-const Blog = lazy(() => import('./pages/Blog'))
-const BlogPost = lazy(() => import('./pages/BlogPost'))
+const Jobs = lazy(() => import('./pages/Jobs'))
+const JobDetail = lazy(() => import('./pages/JobDetail'))
 const AdminLogin = lazy(() => import('./pages/AdminLogin'))
 const Categories = lazy(() => import('./pages/Categories'))
 const About = lazy(() => import('./pages/About'))
@@ -36,8 +36,8 @@ function App() {
             <Suspense fallback={<PageLoader />}>
               <Routes>
                 <Route path="/" element={<Hero />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:id" element={<BlogPost />} />
+                <Route path="/jobs" element={<Jobs />} />
+                <Route path="/jobs/:id" element={<JobDetail />} />
                 <Route path="/admin-login" element={<AdminLogin />} />
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/about" element={<About />} />

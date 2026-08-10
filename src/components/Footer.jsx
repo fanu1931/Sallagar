@@ -24,7 +24,7 @@ const Footer = () => {
               </h3>
             </div>
             <p className="text-gray-300 mb-4">
-              Your trusted product advisor for honest blog posts and expert recommendations.
+              Your trusted platform for finding the best job opportunities and career growth.
             </p>
             <div className="flex space-x-4">
               <a 
@@ -51,7 +51,7 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4 text-purple-300">Quick Links</h4>
             <ul className="space-y-2">
               <li><Link to="/" className="text-gray-400 hover:text-purple-300 transition-colors hover:translate-x-1 inline-block">Home</Link></li>
-              <li><Link to="/blog" className="text-gray-400 hover:text-purple-300 transition-colors hover:translate-x-1 inline-block">Blog</Link></li>
+              <li><Link to="/jobs" className="text-gray-400 hover:text-purple-300 transition-colors hover:translate-x-1 inline-block">Jobs</Link></li>
               <li><Link to="/categories" className="text-gray-400 hover:text-purple-300 transition-colors hover:translate-x-1 inline-block">Categories</Link></li>
               <li><a href="#" className="text-gray-400 hover:text-purple-300 transition-colors hover:translate-x-1 inline-block">Buying Guides</a></li>
               <li><Link to="/about" className="text-gray-400 hover:text-purple-300 transition-colors hover:translate-x-1 inline-block">About Us</Link></li>

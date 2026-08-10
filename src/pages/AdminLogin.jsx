@@ -25,7 +25,7 @@ const AdminLogin = () => {
         if (password === data.admin_password) {
           localStorage.setItem('is_admin', 'true');
           alert("Login Successful! 🔓");
-          navigate('/blog');
+          navigate('/jobs');
         } else {
           setError("Invalid password. Please try again.");
           setPassword('');
@@ -103,10 +103,10 @@ const AdminLogin = () => {
 
         <div className="mt-6 text-center">
           <button
-            onClick={() => navigate('/blog')}
+            onClick={() => navigate('/jobs')}
             className="text-slate-600 hover:text-purple-600 transition-colors text-sm font-medium"
           >
-            ← Back to Blog
+            ← Back to Jobs
           </button>
         </div>
 
