@@ -246,12 +246,12 @@ const Hero = () => {
                         <span className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-purple-500 text-white font-extrabold text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full z-10 uppercase">Featured</span>
                         <div className="h-20 sm:h-36 bg-gradient-to-b from-purple-900/80 to-indigo-800/50 rounded-xl flex items-center justify-center p-1.5 sm:p-3 mb-1.5 sm:mb-3 overflow-hidden group-hover:scale-105 transition-transform duration-300">
                           {product.image_url ? (
-                            <img src={product.image_url} alt={getLocalizedText(product.name) || getLocalizedText(product.title)} className="max-h-full object-contain" />
+                            <img src={product.image_url} alt={product?.name || product?.title || 'Product'} className="max-h-full object-contain" />
                           ) : (
                             <span className="text-2xl sm:text-5xl">🛍️</span>
                           )}
                         </div>
-                        <h3 className="text-[8px] sm:text-sm font-bold text-white truncate mb-1 sm:mb-2">{getLocalizedText(product.name) || getLocalizedText(product.title)}</h3>
+                        <h3 className="text-[8px] sm:text-sm font-bold text-white truncate mb-1 sm:mb-2">{product?.name || product?.title || 'Product Name'}</h3>
                         <div className="flex items-center justify-center mb-0.5 sm:mb-2">
                           <Star className="h-1.5 w-1.5 sm:h-3 sm:w-3 text-purple-300 fill-current" />
                           <Star className="h-1.5 w-1.5 sm:h-3 sm:w-3 text-purple-300 fill-current" />

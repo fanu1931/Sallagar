@@ -80,16 +80,16 @@ const JobDetail = () => {
   return (
     <>
       <Helmet>
-        <title>{job.title} | Sallagar Jobs</title>
-        <meta name="description" content={job.summary?.substring(0, 160)} />
-        <meta name="keywords" content={`${job.title}, ${job.location}, ${job.skills}, jobs, career`} />
+        <title>{job?.title || 'Job'} | Sallagar Jobs</title>
+        <meta name="description" content={job?.summary?.substring(0, 160) || ''} />
+        <meta name="keywords" content={`${job?.title || ''}, ${job?.location || ''}, ${job?.skills || ''}, jobs, career`} />
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-[#1e1b2e] via-[#2d2545] to-[#13111c] text-white">
         {/* Header with Banner */}
         <div className="relative min-h-[300px] w-full">
           <div className="absolute inset-0">
-            <img src={getImageUrl(job)} alt={job.title} className="w-full h-full object-cover" />
+            <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-b from-purple-900/70 via-purple-900/50 to-[#1e1b2e]"></div>
           </div>
           <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -98,10 +98,10 @@ const JobDetail = () => {
               Back to Jobs
             </Link>
             <span className="bg-gradient-to-r from-purple-400 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold inline-block mb-4">
-              {job.job_type || job.jobType}
+              {job?.job_type || job?.jobType || 'Full-time'}
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
-              {job.title}
+              {job?.title || 'Job Title'}
             </h1>
           </div>
         </div>
@@ -112,15 +112,15 @@ const JobDetail = () => {
           <div className="flex flex-wrap items-center gap-4 text-gray-300 border-b border-white/10 mb-8 pb-8">
             <div className="flex items-center">
               <MapPin className="h-4 w-4 mr-2 text-purple-400" />
-              <span>{job.location}</span>
+              <span>{job?.location || 'Location not specified'}</span>
             </div>
             <div className="flex items-center">
               <DollarSign className="h-4 w-4 mr-2 text-purple-400" />
-              <span>{job.salary}</span>
+              <span>{job?.salary || 'Salary not specified'}</span>
             </div>
             <div className="flex items-center">
               <Calendar className="h-4 w-4 mr-2 text-purple-400" />
-              <span>{job.date}</span>
+              <span>{job?.date || 'Date not specified'}</span>
             </div>
             {isUserAdmin && (
               <div className="flex items-center ml-auto gap-2">
@@ -140,7 +140,7 @@ const JobDetail = () => {
           <div className="mb-8">
             <h2 className="text-xl font-bold text-white mb-4">Required Skills</h2>
             <div className="flex flex-wrap gap-2">
-              {(job.skills || '').split(',').map((skill, i) => (
+              {(job?.skills || job?.required_skills || '').split(',').filter(s => s.trim()).map((skill, i) => (
                 <span key={i} className="bg-purple-500/20 border border-purple-500/30 text-purple-300 px-3 py-1.5 rounded-full text-sm font-medium">
                   {skill.trim()}
                 </span>
@@ -152,14 +152,14 @@ const JobDetail = () => {
           <div className="mb-8">
             <h2 className="text-xl font-bold text-white mb-4">Job Description</h2>
             <div className="whitespace-pre-line leading-relaxed text-gray-300 text-lg">
-              {job.summary || job.job_summary}
+              {job?.summary || job?.job_summary || 'No job description available.'}
             </div>
           </div>
 
           {/* Apply Button */}
           <div className="mt-12">
             <a
-              href={job.job_link || job.jobLink}
+              href={job?.job_link || job?.jobLink || '#'}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center w-full sm:w-auto bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-105 shadow-lg shadow-purple-500/30 hover:shadow-2xl hover:shadow-purple-500/50"

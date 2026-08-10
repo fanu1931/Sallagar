@@ -15,7 +15,7 @@ const Jobs = () => {
   const [searchQuery, setSearchQuery] = useState('')
 
   const getImageUrl = (job) => {
-    let imageUrl = job.banner_url || job.banner || job.image_url || job.image
+    let imageUrl = job?.banner_url || job?.banner || job?.image_url || job?.image
     if (typeof imageUrl === 'object' && imageUrl !== null) {
       imageUrl = imageUrl.url || imageUrl.src || JSON.stringify(imageUrl)
     }
@@ -26,11 +26,11 @@ const Jobs = () => {
     return 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200'
   }
 
-  const filteredJobs = jobs.filter(job => {
+  const filteredJobs = (jobs || []).filter(job => {
     const search = searchQuery.toLowerCase()
-    return (job.title || '').toLowerCase().includes(search) ||
-           (job.location || '').toLowerCase().includes(search) ||
-           (job.skills || '').toLowerCase().includes(search)
+    return (job?.title || '').toLowerCase().includes(search) ||
+           (job?.location || '').toLowerCase().includes(search) ||
+           (job?.skills || '').toLowerCase().includes(search)
   })
 
   useEffect(() => {
@@ -116,10 +116,10 @@ const Jobs = () => {
     setEditingJob(job)
     setShowAdminForm(true)
     setNewJob({
-      title: job.title || '', salary: job.salary || '', skills: job.skills || '',
-      jobType: job.job_type || job.jobType || 'Full-Time', location: job.location || '',
-      summary: job.summary || job.job_summary || '', jobLink: job.job_link || job.jobLink || '',
-      banner: job.banner_url || job.banner || ''
+      title: job?.title || '', salary: job?.salary || '', skills: job?.skills || '',
+      jobType: job?.job_type || job?.jobType || 'Full-Time', location: job?.location || '',
+      summary: job?.summary || job?.job_summary || '', jobLink: job?.job_link || job?.jobLink || '',
+      banner: job?.banner_url || job?.banner || ''
     })
   }
 
@@ -241,25 +241,25 @@ const Jobs = () => {
                 {filteredJobs.map((job) => (
                   <div key={job.id} className="bg-white rounded-3xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
                     <div className="relative h-48 overflow-hidden">
-                      <img src={getImageUrl(job)} alt={job.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                      <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                       <div className="absolute top-3 right-3">
-                        <span className="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold">{job.job_type || job.jobType}</span>
+                        <span className="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold">{job?.job_type || job?.jobType || 'Full-Time'}</span>
                       </div>
                     </div>
                     <div className="p-6">
-                      <h3 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2">{job.title}</h3>
+                      <h3 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2">{job?.title || 'Job Title'}</h3>
                       <div className="space-y-2 mb-4">
                         <div className="flex items-center text-slate-600 text-sm">
                           <DollarSign className="h-4 w-4 mr-2 text-purple-600" />
-                          {job.salary}
+                          {job?.salary || 'Salary not specified'}
                         </div>
                         <div className="flex items-center text-slate-600 text-sm">
                           <MapPin className="h-4 w-4 mr-2 text-purple-600" />
-                          {job.location}
+                          {job?.location || 'Location not specified'}
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {(job.skills || '').split(',').slice(0, 3).map((skill, i) => (
+                        {(job?.skills || '').split(',').filter(s => s.trim()).slice(0, 3).map((skill, i) => (
                           <span key={i} className="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs font-medium">{skill.trim()}</span>
                         ))}
                       </div>
