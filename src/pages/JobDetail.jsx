@@ -87,9 +87,9 @@ const JobDetail = () => {
 
       <div className="min-h-screen bg-gradient-to-b from-[#1e1b2e] via-[#2d2545] to-[#13111c] text-white">
         {/* Header with Banner */}
-        <div className="relative min-h-[300px] w-full">
-          <div className="absolute inset-0">
-            <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-full object-cover" />
+        <div className="relative w-full">
+          <div className="relative w-full">
+            <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-auto object-contain" />
             <div className="absolute inset-0 bg-gradient-to-b from-purple-900/70 via-purple-900/50 to-[#1e1b2e]"></div>
           </div>
           <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
