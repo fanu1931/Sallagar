@@ -155,10 +155,10 @@ const Jobs = () => {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-2 gap-3 sm:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="bg-white rounded-2xl shadow-md overflow-hidden">
-                <div className="h-16 md:h-24 lg:h-32 bg-gray-100 animate-pulse" />
+                <div className="h-32 md:h-44 bg-gray-100 animate-pulse" />
                 <div className="p-3">
                   <div className="h-4 bg-slate-200 rounded animate-pulse mb-2" />
                   <div className="h-3 bg-slate-200 rounded animate-pulse w-2/3" />
@@ -240,11 +240,11 @@ const Jobs = () => {
                 <h3 className="text-xl font-semibold text-slate-600 mb-2">No jobs found</h3>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-3 sm:gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
                   {filteredJobs.map((job) => (
                     <div key={job.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
-                      <div className="relative h-16 md:h-24 lg:h-32 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="max-h-full max-w-full object-contain mx-auto" />
+                      <div className="relative h-32 md:h-44 overflow-hidden">
+                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-full object-cover rounded-t-xl" />
                         <div className="absolute top-2 right-2">
                           <span className="bg-purple-600 text-white px-2 py-1 rounded-full text-[10px] sm:text-xs font-semibold">{job?.job_type || job?.jobType || 'Full-Time'}</span>
                         </div>
