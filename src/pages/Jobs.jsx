@@ -157,7 +157,7 @@ const Jobs = () => {
         {loading ? (
           <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar" id="jobs-page-carousel">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-3xl shadow-md overflow-hidden w-[75vw] sm:w-[350px] flex-shrink-0 snap-center">
+              <div key={i} className="bg-white rounded-3xl shadow-md overflow-hidden w-[70vw] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
                 <div className="aspect-video sm:h-40 bg-slate-200 animate-pulse" />
                 <div className="p-6"><div className="h-6 bg-slate-200 rounded animate-pulse mb-3" /></div>
               </div>
@@ -265,7 +265,7 @@ const Jobs = () => {
                 </div>
                 <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar" id="jobs-page-carousel">
                   {filteredJobs.map((job) => (
-                    <div key={job.id} className="bg-white rounded-3xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[75vw] sm:w-[350px] flex-shrink-0 snap-center">
+                    <div key={job.id} className="bg-white rounded-3xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[70vw] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
                       <div className="relative aspect-video sm:h-40 overflow-hidden">
                         <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
                         <div className="absolute top-3 right-3">

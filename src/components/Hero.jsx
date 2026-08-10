@@ -235,7 +235,7 @@ const Hero = () => {
               {loading ? (
                 <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar" id="jobs-carousel">
                   {[...Array(4)].map((_, i) => (
-                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden w-[75vw] sm:w-[350px] flex-shrink-0 snap-center">
+                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden w-[70vw] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
                       <div className="aspect-video sm:h-40 bg-slate-200 dark:bg-slate-700 animate-pulse" />
                       <div className="p-1.5 sm:p-5">
                         <div className="h-3 sm:h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1 sm:mb-2" />
@@ -249,7 +249,7 @@ const Hero = () => {
               ) : (
                 <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar" id="jobs-carousel">
                   {(jobs || []).map((job) => (
-                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-[75vw] sm:w-[350px] flex-shrink-0 snap-center">
+                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-[70vw] md:w-[320px] lg:w-[350px] flex-shrink-0 snap-center">
                       <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full">
                         {job.banner_url || job.banner ? (
                           <img src={job.banner_url || job.banner} alt={job.title} className="w-full aspect-video sm:h-40 object-contain" />
