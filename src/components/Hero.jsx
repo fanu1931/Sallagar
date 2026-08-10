@@ -236,11 +236,11 @@ const Hero = () => {
                         )}
                         <div className="p-1.5 sm:p-3">
                           <span className="text-[9px] sm:text-[10px] font-semibold px-1.5 sm:px-2 py-0.5 sm:py-1 bg-purple-500/20 text-purple-300 rounded-full">{job.job_type || job.jobType || 'Full-Time'}</span>
-                          <h3 className="text-[10px] sm:text-sm sm:text-lg font-bold text-white mt-1 sm:mt-2 mb-1 sm:mb-2 line-clamp-1">{job.title}</h3>
-                          <p className="text-[9px] sm:text-xs sm:text-sm text-slate-300 mb-1 sm:mb-2 line-clamp-1">{job.location} • {job.salary}</p>
-                          <div className="flex items-center justify-between text-[9px] sm:text-[10px] sm:text-xs text-slate-400">
+                          <h3 className="text-[10px] sm:text-lg font-bold text-white mt-1 sm:mt-2 mb-1 sm:mb-2 line-clamp-1">{job.title}</h3>
+                          <p className="text-[9px] sm:text-sm text-slate-300 mb-1 sm:mb-2 line-clamp-1">{job.location} • {job.salary}</p>
+                          <div className="flex items-center justify-between text-[9px] sm:text-xs text-slate-400">
                             <span className="hidden md:inline">{job.created_at ? new Date(job.created_at).toLocaleDateString() : ''}</span>
-                            <span className="font-semibold text-purple-400 flex items-center text-[9px] sm:text-[10px] sm:text-xs">Apply →</span>
+                            <span className="font-semibold text-purple-400 flex items-center text-[9px] sm:text-xs">Apply →</span>
                           </div>
                         </div>
                       </div>
