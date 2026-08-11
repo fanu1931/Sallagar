@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Star, Shield, CheckCircle, ChevronLeft, ChevronRight, ChevronDown, Briefcase } from 'lucide-react'
 import { supabase } from '../supabaseClient'
@@ -11,6 +11,8 @@ const Hero = () => {
   const [prodIndex, setProdIndex] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const jobsSliderRef = useRef(null)
+  const [currentJobSlide, setCurrentJobSlide] = useState(0)
 
   // Auto-slide for Featured Products every 5 seconds
   useEffect(() => {
@@ -22,6 +24,28 @@ const Hero = () => {
 
     return () => clearInterval(interval)
   }, [products])
+
+  // Auto-slide for Featured Jobs every 5 seconds
+  useEffect(() => {
+    if (!jobsSliderRef.current || !jobs || jobs.length === 0) return
+
+    const interval = setInterval(() => {
+      setCurrentJobSlide((prev) => {
+        const nextSlide = (prev + 1) % jobs.length
+        const slider = jobsSliderRef.current
+        if (slider) {
+          const slideWidth = slider.children[0]?.offsetWidth || 0
+          slider.scrollTo({
+            left: nextSlide * slideWidth,
+            behavior: 'smooth'
+          })
+        }
+        return nextSlide
+      })
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [jobs])
 
   // Fetch jobs and products from Supabase with caching
   useEffect(() => {
@@ -220,9 +244,9 @@ const Hero = () => {
               <h2 className="text-2xl font-bold text-white mb-4">Featured Jobs</h2>
 
               {loading ? (
-                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
+                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-1.5 px-2 pb-2 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
                   {[...Array(4)].map((_, i) => (
-                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden w-[32vw] min-w-[110px] md:w-full flex-shrink-0 snap-center">
+                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden w-[29vw] min-w-[95px] max-w-[110px] md:w-full flex-shrink-0 snap-center">
                       <div className="aspect-video h-16 sm:h-44 bg-gray-100 dark:bg-slate-700 animate-pulse rounded-t-lg" />
                       <div className="p-1.5 sm:p-3">
                         <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1" />
@@ -234,9 +258,9 @@ const Hero = () => {
               ) : !Array.isArray(jobs) || jobs.length === 0 ? (
                 <div className="text-center text-slate-400 py-8">No jobs found</div>
               ) : (
-                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
+                <div ref={jobsSliderRef} className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-1.5 px-2 pb-2 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
                   {(jobs || []).map((job) => (
-                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-[32vw] min-w-[110px] md:w-full flex-shrink-0 snap-center">
+                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-[29vw] min-w-[95px] max-w-[110px] md:w-full flex-shrink-0 snap-center">
                       <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full">
                         {job.banner_url || job.banner ? (
                           <img src={job.banner_url || job.banner} alt={job.title} className="w-full aspect-video h-16 sm:h-44 object-contain bg-slate-900 rounded-t-lg" />
