@@ -189,10 +189,10 @@ const Jobs = () => {
         </div>
 
         {loading ? (
-          <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
+          <div className="flex md:grid flex-row md:flex-none overflow-x-auto md:overflow-visible snap-x snap-mandatory gap-2 pb-4 md:pb-0 md:gap-6 md:grid-cols-3 no-scrollbar">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl shadow-md overflow-hidden w-[28vw] min-w-[105px] max-w-[115px] sm:w-[300px] md:w-full flex-shrink-0 snap-center">
-                <div className="h-14 w-full bg-gray-100 animate-pulse rounded-t-lg" />
+              <div key={i} className="bg-white rounded-2xl shadow-md overflow-hidden w-[28vw] min-w-[105px] max-w-[115px] md:w-auto md:flex-shrink-0 flex-shrink-0 snap-center">
+                <div className="h-14 md:h-52 w-full bg-gray-100 animate-pulse rounded-t-lg" />
                 <div className="p-1.5 sm:p-3">
                   <div className="h-3 bg-slate-200 rounded animate-pulse mb-1" />
                   <div className="h-2 bg-slate-200 rounded animate-pulse w-2/3" />
@@ -274,39 +274,39 @@ const Jobs = () => {
                 <h3 className="text-xl font-semibold text-slate-600 mb-2">No jobs found</h3>
               </div>
             ) : (
-              <div ref={sliderRef} className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
+              <div ref={sliderRef} className="flex md:grid flex-row md:flex-none overflow-x-auto md:overflow-visible snap-x snap-mandatory gap-2 pb-4 md:pb-0 md:gap-6 md:grid-cols-3 no-scrollbar">
                   {filteredJobs.map((job) => (
-                    <div key={job.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[28vw] min-w-[105px] max-w-[115px] sm:w-[300px] md:w-full flex-shrink-0 snap-center">
+                    <div key={job.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[28vw] min-w-[105px] max-w-[115px] md:w-auto md:flex-shrink-0 flex-shrink-0 snap-center">
                       <div className="relative p-0 m-0 w-full overflow-hidden rounded-t-2xl">
-                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="h-14 w-full object-cover rounded-t-lg block border-b border-gray-100" />
+                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="h-14 md:h-52 w-full object-cover rounded-t-lg block border-b border-gray-100" />
                         <div className="absolute top-2 right-2 z-10">
                           <span className="bg-purple-600 text-white px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-semibold">{job?.job_type || job?.jobType || 'Full-Time'}</span>
                         </div>
                       </div>
-                      <div className="p-1.5 sm:p-3">
-                        <h3 className="text-[10px] sm:text-lg font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-1">{job?.title || 'Job Title'}</h3>
-                        <div className="space-y-0.5 sm:space-y-2 mb-2 sm:mb-3">
-                          <div className="flex items-center text-slate-600 text-[9px] sm:text-sm">
-                            <DollarSign className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-purple-600" />
+                      <div className="p-1.5 md:p-3">
+                        <h3 className="text-[10px] md:text-lg font-bold text-slate-900 mb-1 md:mb-2 line-clamp-1">{job?.title || 'Job Title'}</h3>
+                        <div className="space-y-0.5 md:space-y-2 mb-2 md:mb-3">
+                          <div className="flex items-center text-slate-600 text-[9px] md:text-sm">
+                            <DollarSign className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2 text-purple-600" />
                             {job?.salary || 'Salary not specified'}
                           </div>
-                          <div className="flex items-center text-slate-600 text-[9px] sm:text-sm">
-                            <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-purple-600" />
+                          <div className="flex items-center text-slate-600 text-[9px] md:text-sm">
+                            <MapPin className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2 text-purple-600" />
                             {job?.location || 'Location not specified'}
                           </div>
                         </div>
-                        <div className="flex flex-wrap gap-1 sm:gap-2 mb-2 sm:mb-3">
+                        <div className="flex flex-wrap gap-1 md:gap-2 mb-2 md:mb-3">
                           {(job?.skills || '').split(',').filter(s => s.trim()).slice(0, 3).map((skill, i) => (
-                            <span key={i} className="bg-purple-100 text-purple-700 px-1 sm:px-2 py-0.5 sm:py-1 rounded-full text-[8px] sm:text-xs font-medium">{skill.trim()}</span>
+                            <span key={i} className="bg-purple-100 text-purple-700 px-1 md:px-2 py-0.5 md:py-1 rounded-full text-[8px] md:text-xs font-medium">{skill.trim()}</span>
                           ))}
                         </div>
-                        <div className="flex gap-1 sm:gap-2">
-                          <Link to={`/jobs/${job.id}`} className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white px-2 sm:px-4 py-1 sm:py-2 rounded-xl font-semibold text-center transition-all duration-300 text-[9px] sm:text-sm">View Details</Link>
+                        <div className="flex gap-1 md:gap-2">
+                          <Link to={`/jobs/${job.id}`} className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white px-2 md:px-4 py-1 md:py-2 rounded-xl font-semibold text-center transition-all duration-300 text-[9px] md:text-sm">View Details</Link>
                           {isUserAdmin && (
                             <>
-                              <div className="flex gap-1 sm:gap-2">
-                                <button onClick={() => handleEditJob(job)} className="p-1 sm:p-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-xl transition-all"><Edit2 className="h-3 w-3 sm:h-4 sm:w-4" /></button>
-                                <button onClick={() => handleDeleteJob(job.id)} className="p-1 sm:p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-xl transition-all"><Trash2 className="h-3 w-3 sm:h-4 sm:w-4" /></button>
+                              <div className="flex gap-1 md:gap-2">
+                                <button onClick={() => handleEditJob(job)} className="p-1 md:p-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-xl transition-all"><Edit2 className="h-3 w-3 md:h-4 md:w-4" /></button>
+                                <button onClick={() => handleDeleteJob(job.id)} className="p-1 md:p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-xl transition-all"><Trash2 className="h-3 w-3 md:h-4 md:w-4" /></button>
                               </div>
                             </>
                           )}
