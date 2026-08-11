@@ -250,7 +250,9 @@ const Hero = () => {
                     <Link key={job.id} to={`/jobs/${job.id}`} className="block">
                       <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 hover:border-purple-400/50 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full group relative">
                         {job.banner_url || job.banner ? (
-                          <img src={job.banner_url || job.banner} alt={job.title} className="h-16 w-full object-cover rounded-t-lg sm:h-36" />
+                          <div className="w-full bg-slate-900 rounded-t-2xl overflow-hidden">
+                            <img src={job.banner_url || job.banner} alt={job.title} className="w-full h-auto max-h-52 object-contain rounded-t-2xl" />
+                          </div>
                         ) : (
                           <div className="h-16 w-full bg-purple-900/40 flex items-center justify-center rounded-t-lg sm:h-36">
                             <span className="text-xl sm:text-4xl">📋</span>
