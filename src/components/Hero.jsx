@@ -11,8 +11,6 @@ const Hero = () => {
   const [prodIndex, setProdIndex] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const jobsSliderRef = useRef(null)
-  const [currentJobSlide, setCurrentJobSlide] = useState(0)
 
   // Auto-slide for Featured Products every 5 seconds
   useEffect(() => {
@@ -27,21 +25,10 @@ const Hero = () => {
 
   // Auto-slide for Featured Jobs every 5 seconds
   useEffect(() => {
-    if (!jobsSliderRef.current || !jobs || jobs.length === 0) return
+    if (!jobs || jobs.length <= 3) return
 
     const interval = setInterval(() => {
-      setCurrentJobSlide((prev) => {
-        const nextSlide = (prev + 1) % jobs.length
-        const slider = jobsSliderRef.current
-        if (slider) {
-          const slideWidth = slider.children[0]?.offsetWidth || 0
-          slider.scrollTo({
-            left: nextSlide * slideWidth,
-            behavior: 'smooth'
-          })
-        }
-        return nextSlide
-      })
+      setJobIndex((prev) => (prev + 3 >= jobs.length ? 0 : prev + 3))
     }, 5000)
 
     return () => clearInterval(interval)
@@ -136,23 +123,7 @@ const Hero = () => {
     return () => { isMounted = false }
   }, [])
 
-  // Safe Auto-Slider Intervals for jobs
-  useEffect(() => {
-    if (!jobs || jobs.length <= 3) return
-    const timer = setInterval(() => {
-      setJobIndex((prev) => (prev + 3 >= jobs.length ? 0 : prev + 3))
-    }, 4000)
-    return () => clearInterval(timer)
-  }, [jobs])
 
-  // Safe Auto-Slider Intervals for products
-  useEffect(() => {
-    if (!products || products.length <= 3) return
-    const timer = setInterval(() => {
-      setProdIndex((prev) => (prev + 3 >= products.length ? 0 : prev + 3))
-    }, 4000)
-    return () => clearInterval(timer)
-  }, [products])
 
   if (error) {
     return (
@@ -239,43 +210,59 @@ const Hero = () => {
               <ChevronDown className="h-5 w-5 text-purple-300"/>
             </div>
 
-            {/* Featured Jobs */}
+            {/* Featured Jobs Slider */}
             <div className="mt-6 max-w-7xl mx-auto pb-4 text-left">
-              <h2 className="text-2xl font-bold text-white mb-4">Featured Jobs</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold text-white">Featured Jobs</h2>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setJobIndex((prev) => (prev - 3 < 0 ? Math.max(0, (jobs || []).length - 3) : prev - 3))}
+                    disabled={!jobs || jobs.length <= 3}
+                    className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition disabled:opacity-50"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </button>
+                  <button
+                    onClick={() => setJobIndex((prev) => (prev + 3 >= (jobs || []).length ? 0 : prev + 3))}
+                    disabled={!jobs || jobs.length <= 3}
+                    className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition disabled:opacity-50"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </button>
+                </div>
+              </div>
 
               {loading ? (
-                <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6 md:overflow-visible">
-                  {[...Array(4)].map((_, i) => (
-                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden w-[110px] min-w-[110px] sm:w-[300px] flex-shrink-0 snap-center md:w-full md:max-w-none">
-                      <div className="h-16 w-full bg-gray-100 dark:bg-slate-700 animate-pulse rounded-t-lg md:h-48 md:w-full md:object-cover md:rounded-t-xl" />
-                      <div className="p-2 md:p-5">
-                        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1" />
-                        <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-2/3" />
-                      </div>
+                <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-4 min-h-[200px]">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl p-2 sm:p-4">
+                      <div className="h-16 sm:h-36 bg-slate-200 dark:bg-slate-700 rounded-xl animate-pulse mb-2" />
+                      <div className="h-2 sm:h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-1 sm:mb-2" />
+                      <div className="h-2 sm:h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-2/3" />
                     </div>
                   ))}
                 </div>
               ) : !Array.isArray(jobs) || jobs.length === 0 ? (
                 <div className="text-center text-slate-400 py-8">No jobs found</div>
               ) : (
-                <div ref={jobsSliderRef} className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6 md:overflow-visible">
-                  {(jobs || []).map((job) => (
-                    <Link key={job.id} to={`/jobs/${job.id}`} className="block w-[110px] min-w-[110px] sm:w-[300px] flex-shrink-0 snap-center md:w-full md:max-w-none">
-                      <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full">
+                <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-4 min-h-[200px]">
+                  {(jobs || []).slice(jobIndex, jobIndex + 3).map((job) => (
+                    <Link key={job.id} to={`/jobs/${job.id}`} className="block">
+                      <div className="bg-white/10 backdrop-blur-md border border-purple-500/20 hover:border-purple-400/50 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full group relative">
                         {job.banner_url || job.banner ? (
-                          <img src={job.banner_url || job.banner} alt={job.title} className="h-16 w-full object-cover rounded-t-lg md:h-48 md:w-full md:object-cover md:rounded-t-xl" />
+                          <img src={job.banner_url || job.banner} alt={job.title} className="h-16 w-full object-cover rounded-t-lg sm:h-36" />
                         ) : (
-                          <div className="h-16 w-full bg-purple-900/40 flex items-center justify-center rounded-t-lg md:h-48 md:w-full md:object-cover md:rounded-t-xl">
-                            <span className="text-xl md:text-4xl">📋</span>
+                          <div className="h-16 w-full bg-purple-900/40 flex items-center justify-center rounded-t-lg sm:h-36">
+                            <span className="text-xl sm:text-4xl">📋</span>
                           </div>
                         )}
-                        <div className="p-2 md:p-5">
-                          <span className="text-[9px] md:text-[10px] font-semibold px-1.5 md:px-2 py-0.5 md:py-1 bg-purple-500/20 text-purple-300 rounded-full">{job.job_type || job.jobType || 'Full-Time'}</span>
-                          <h3 className="text-[10px] md:text-base font-bold text-white mt-1 md:mt-2 mb-1 md:mb-2 line-clamp-1">{job.title}</h3>
-                          <p className="text-[9px] md:text-sm text-slate-300 mb-1 md:mb-2 line-clamp-1">{job.location} • {job.salary}</p>
-                          <div className="flex items-center justify-between text-[9px] md:text-xs text-slate-400">
-                            <span className="hidden md:inline">{job.created_at ? new Date(job.created_at).toLocaleDateString() : ''}</span>
-                            <span className="font-semibold text-purple-400 flex items-center text-[9px] md:text-xs">Apply →</span>
+                        <div className="p-2 sm:p-4">
+                          <span className="text-[9px] sm:text-[10px] font-semibold px-1.5 sm:px-2 py-0.5 sm:py-1 bg-purple-500/20 text-purple-300 rounded-full">{job.job_type || job.jobType || 'Full-Time'}</span>
+                          <h3 className="text-[10px] sm:text-base font-bold text-white mt-1 sm:mt-2 mb-1 sm:mb-2 line-clamp-1">{job.title}</h3>
+                          <p className="text-[9px] sm:text-sm text-slate-300 mb-1 sm:mb-2 line-clamp-1">{job.location} • {job.salary}</p>
+                          <div className="flex items-center justify-between text-[9px] sm:text-xs text-slate-400">
+                            <span className="hidden sm:inline">{job.created_at ? new Date(job.created_at).toLocaleDateString() : ''}</span>
+                            <span className="font-semibold text-purple-400 flex items-center text-[9px] sm:text-xs">Apply →</span>
                           </div>
                         </div>
                       </div>
