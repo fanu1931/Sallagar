@@ -189,11 +189,11 @@ const Jobs = () => {
         </div>
 
         {loading ? (
-          <div className="flex md:grid flex-row md:flex-none overflow-x-auto md:overflow-visible snap-x snap-mandatory gap-2 pb-4 md:pb-0 md:gap-6 md:grid-cols-3 no-scrollbar">
+          <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6 md:overflow-visible">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl shadow-md overflow-hidden w-[28vw] min-w-[105px] max-w-[115px] md:w-auto md:flex-shrink-0 flex-shrink-0 snap-center">
-                <div className="h-14 md:h-52 w-full bg-gray-100 animate-pulse rounded-t-lg" />
-                <div className="p-1.5 sm:p-3">
+              <div key={i} className="bg-white rounded-2xl shadow-md overflow-hidden w-[110px] min-w-[110px] sm:w-[300px] flex-shrink-0 snap-center md:w-full md:max-w-none">
+                <div className="h-16 w-full bg-gray-100 animate-pulse rounded-t-lg md:h-48 md:w-full md:object-cover md:rounded-t-xl" />
+                <div className="p-2 md:p-5">
                   <div className="h-3 bg-slate-200 rounded animate-pulse mb-1" />
                   <div className="h-2 bg-slate-200 rounded animate-pulse w-2/3" />
                 </div>
@@ -274,17 +274,17 @@ const Jobs = () => {
                 <h3 className="text-xl font-semibold text-slate-600 mb-2">No jobs found</h3>
               </div>
             ) : (
-              <div ref={sliderRef} className="flex md:grid flex-row md:flex-none overflow-x-auto md:overflow-visible snap-x snap-mandatory gap-2 pb-4 md:pb-0 md:gap-6 md:grid-cols-3 no-scrollbar">
+              <div ref={sliderRef} className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6 md:overflow-visible">
                   {filteredJobs.map((job) => (
-                    <div key={job.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[28vw] min-w-[105px] max-w-[115px] md:w-auto md:flex-shrink-0 flex-shrink-0 snap-center">
+                    <div key={job.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[110px] min-w-[110px] sm:w-[300px] flex-shrink-0 snap-center md:w-full md:max-w-none">
                       <div className="relative p-0 m-0 w-full overflow-hidden rounded-t-2xl">
-                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="h-14 md:h-52 w-full object-cover rounded-t-lg block border-b border-gray-100" />
+                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="h-16 w-full object-cover rounded-t-lg block border-b border-gray-100 md:h-48 md:w-full md:object-cover md:rounded-t-xl" />
                         <div className="absolute top-2 right-2 z-10">
                           <span className="bg-purple-600 text-white px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-semibold">{job?.job_type || job?.jobType || 'Full-Time'}</span>
                         </div>
                       </div>
-                      <div className="p-1.5 md:p-3">
-                        <h3 className="text-[10px] md:text-lg font-bold text-slate-900 mb-1 md:mb-2 line-clamp-1">{job?.title || 'Job Title'}</h3>
+                      <div className="p-2 md:p-5">
+                        <h3 className="text-[10px] md:text-base font-bold text-slate-900 mb-1 md:mb-2 line-clamp-1">{job?.title || 'Job Title'}</h3>
                         <div className="space-y-0.5 md:space-y-2 mb-2 md:mb-3">
                           <div className="flex items-center text-slate-600 text-[9px] md:text-sm">
                             <DollarSign className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2 text-purple-600" />
