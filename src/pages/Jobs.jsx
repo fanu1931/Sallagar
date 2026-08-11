@@ -191,8 +191,8 @@ const Jobs = () => {
         {loading ? (
           <div className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl shadow-md overflow-hidden w-[32vw] min-w-[110px] md:w-full flex-shrink-0 snap-center">
-                <div className="aspect-video h-16 sm:h-44 bg-gray-100 animate-pulse rounded-t-lg" />
+              <div key={i} className="bg-white rounded-2xl shadow-md overflow-hidden w-[28vw] min-w-[105px] max-w-[115px] sm:w-[300px] md:w-full flex-shrink-0 snap-center">
+                <div className="h-14 w-full bg-gray-100 animate-pulse rounded-t-lg" />
                 <div className="p-1.5 sm:p-3">
                   <div className="h-3 bg-slate-200 rounded animate-pulse mb-1" />
                   <div className="h-2 bg-slate-200 rounded animate-pulse w-2/3" />
@@ -276,15 +276,15 @@ const Jobs = () => {
             ) : (
               <div ref={sliderRef} className="flex flex-row overflow-x-auto snap-x snap-mandatory gap-2 pb-4 no-scrollbar md:grid md:grid-cols-3 md:gap-6">
                   {filteredJobs.map((job) => (
-                    <div key={job.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[32vw] min-w-[110px] md:w-full flex-shrink-0 snap-center">
+                    <div key={job.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group w-[28vw] min-w-[105px] max-w-[115px] sm:w-[300px] md:w-full flex-shrink-0 snap-center">
                       <div className="relative p-0 m-0 w-full overflow-hidden rounded-t-2xl">
-                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="w-full h-44 sm:h-48 object-cover rounded-t-2xl block border-b border-gray-100" />
-                        <div className="absolute top-3 right-3 z-10">
+                        <img src={getImageUrl(job)} alt={job?.title || 'Job'} className="h-14 w-full object-cover rounded-t-lg block border-b border-gray-100" />
+                        <div className="absolute top-2 right-2 z-10">
                           <span className="bg-purple-600 text-white px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-semibold">{job?.job_type || job?.jobType || 'Full-Time'}</span>
                         </div>
                       </div>
                       <div className="p-1.5 sm:p-3">
-                        <h3 className="text-[10px] sm:text-lg font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-2">{job?.title || 'Job Title'}</h3>
+                        <h3 className="text-[10px] sm:text-lg font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-1">{job?.title || 'Job Title'}</h3>
                         <div className="space-y-0.5 sm:space-y-2 mb-2 sm:mb-3">
                           <div className="flex items-center text-slate-600 text-[9px] sm:text-sm">
                             <DollarSign className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-purple-600" />
