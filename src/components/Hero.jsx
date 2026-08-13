@@ -319,7 +319,7 @@ const Hero = () => {
                             <img src={product.image_url} alt={product?.name || product?.title || 'Product'} className="w-full h-48 md:h-52 object-contain rounded-t-2xl block" />
                           </div>
                         ) : (
-                          <div className="h-20 sm:h-36 w-full bg-white flex items-center justify-center rounded-t-lg sm:h-48 md:h-52">
+                          <div className="h-20 sm:h-36 w-full bg-white flex items-center justify-center rounded-t-lg md:h-52">
                             <span className="text-2xl sm:text-5xl">🛍️</span>
                           </div>
                         )}
