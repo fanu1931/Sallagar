@@ -315,11 +315,11 @@ const Hero = () => {
                       <div className="bg-white/10 border border-purple-500/20 hover:border-purple-400/50 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full group relative">
                         <span className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-purple-500 text-white font-extrabold text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full z-10 uppercase">Featured</span>
                         {product.image_url ? (
-                          <div className="w-full bg-slate-900 rounded-t-2xl overflow-hidden">
-                            <img src={product.image_url} alt={product?.name || product?.title || 'Product'} className="w-full h-48 md:h-52 object-cover rounded-t-2xl block" />
+                          <div className="w-full bg-white rounded-t-2xl overflow-hidden">
+                            <img src={product.image_url} alt={product?.name || product?.title || 'Product'} className="w-full h-48 md:h-52 object-contain rounded-t-2xl block" />
                           </div>
                         ) : (
-                          <div className="h-20 sm:h-36 w-full bg-gradient-to-b from-purple-900/80 to-indigo-800/50 flex items-center justify-center rounded-t-lg sm:h-48 md:h-52">
+                          <div className="h-20 sm:h-36 w-full bg-white flex items-center justify-center rounded-t-lg sm:h-48 md:h-52">
                             <span className="text-2xl sm:text-5xl">🛍️</span>
                           </div>
                         )}
