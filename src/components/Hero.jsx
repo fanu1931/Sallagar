@@ -312,26 +312,30 @@ const Hero = () => {
                 <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-4 min-h-[200px]">
                   {(products || []).slice(prodIndex, prodIndex + 3).map((product) => (
                     <Link key={product.id} to="/categories" className="block">
-                      <div className="bg-white/10 border border-purple-500/20 hover:border-purple-400/50 rounded-2xl p-2 sm:p-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/10 group relative">
+                      <div className="bg-white/10 border border-purple-500/20 hover:border-purple-400/50 rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 h-full w-full group relative">
                         <span className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-purple-500 text-white font-extrabold text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full z-10 uppercase">Featured</span>
-                        <div className="h-20 sm:h-36 bg-gradient-to-b from-purple-900/80 to-indigo-800/50 rounded-xl flex items-center justify-center p-1.5 sm:p-3 mb-1.5 sm:mb-3 overflow-hidden group-hover:scale-105 transition-transform duration-300">
-                          {product.image_url ? (
-                            <img src={product.image_url} alt={product?.name || product?.title || 'Product'} className="max-h-full object-contain" />
-                          ) : (
+                        {product.image_url ? (
+                          <div className="w-full bg-slate-900 rounded-t-2xl overflow-hidden">
+                            <img src={product.image_url} alt={product?.name || product?.title || 'Product'} className="w-full h-48 md:h-52 object-cover rounded-t-2xl block" />
+                          </div>
+                        ) : (
+                          <div className="h-20 sm:h-36 w-full bg-gradient-to-b from-purple-900/80 to-indigo-800/50 flex items-center justify-center rounded-t-lg sm:h-48 md:h-52">
                             <span className="text-2xl sm:text-5xl">🛍️</span>
-                          )}
-                        </div>
-                        <h3 className="text-[8px] sm:text-sm font-bold text-white truncate mb-1 sm:mb-2">{product?.name || product?.title || 'Product Name'}</h3>
-                        <div className="flex items-center justify-center mb-0.5 sm:mb-2">
-                          <Star className="h-1.5 w-1.5 sm:h-3 sm:w-3 text-purple-300 fill-current" />
-                          <Star className="h-1.5 w-1.5 sm:h-3 sm:w-3 text-purple-300 fill-current" />
-                          <Star className="h-1.5 w-1.5 sm:h-3 sm:w-3 text-purple-300 fill-current" />
-                          <Star className="h-1.5 w-1.5 sm:h-3 sm:w-3 text-purple-300 fill-current" />
-                          <Star className="h-1.5 w-1.5 sm:h-3 sm:w-3 text-purple-300 fill-current" />
-                        </div>
-                        <p className="text-purple-300 text-[10px] sm:text-lg font-black mb-1 sm:mb-3">₹{product.price}</p>
-                        <div className="bg-gradient-to-r from-purple-400 to-indigo-500 text-white font-extrabold text-[8px] sm:text-xs py-1 sm:py-2 px-1.5 sm:px-3 rounded-xl shadow-lg hover:brightness-110 flex items-center justify-center gap-0.5 sm:gap-1 w-full transition">
-                          Buy Now 🛒
+                          </div>
+                        )}
+                        <div className="p-2 sm:p-4">
+                          <h3 className="text-[8px] sm:text-sm font-bold text-white truncate mb-1 sm:mb-2">{product?.name || product?.title || 'Product Name'}</h3>
+                          <div className="flex items-center justify-center mb-0.5 sm:mb-2">
+                            <Star className="h-1.5 w-1.5 sm:h-3 sm:w-3 text-purple-300 fill-current" />
+                            <Star className="h-1.5 w-1.5 sm:h-3 sm:w-3 text-purple-300 fill-current" />
+                            <Star className="h-1.5 w-1.5 sm:h-3 sm:w-3 text-purple-300 fill-current" />
+                            <Star className="h-1.5 w-1.5 sm:h-3 sm:w-3 text-purple-300 fill-current" />
+                            <Star className="h-1.5 w-1.5 sm:h-3 sm:w-3 text-purple-300 fill-current" />
+                          </div>
+                          <p className="text-purple-300 text-[10px] sm:text-lg font-black mb-1 sm:mb-3">₹{product.price}</p>
+                          <div className="bg-gradient-to-r from-purple-400 to-indigo-500 text-white font-extrabold text-[8px] sm:text-xs py-1 sm:py-2 px-1.5 sm:px-3 rounded-xl shadow-lg hover:brightness-110 flex items-center justify-center gap-0.5 sm:gap-1 w-full transition">
+                            Buy Now 🛒
+                          </div>
                         </div>
                       </div>
                     </Link>
